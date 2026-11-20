@@ -91,4 +91,4 @@ for prompt in ["Attention ", "The perceptron ", "Today the "]:
 ## Takeaways
 - Decoder-only + next-token prediction + scale = GPT. The architecture above is essentially GPT-2 at toy size.
 - The **scaling laws** (Kaplan et al. 2020; Chinchilla, Hoffmann et al. 2022) found that loss falls predictably as a power law in parameters, data and compute.
-- See `38_2026_modern_llm_recipe` for how this block evolved (RMSNorm, RoPE, GQA, SwiGLU, ...).
+- See `53_2026_modern_llm_recipe` for how this block evolved (RMSNorm, RoPE, GQA, SwiGLU, ...).

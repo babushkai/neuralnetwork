@@ -1,7 +1,7 @@
 #%% md
 # 2026 — The Modern LLM Recipe
 
-The 2017 Transformer block has been refined piece by piece. By 2025–2026 the open frontier models (Llama 3/4, Qwen3, DeepSeek-V3, Gemma 3, OLMo 2/3, Kimi K2, gpt-oss, ...) agree on a fairly standard **dense block**, often combined with MoE (notebook 32), MLA (34) or hybrid linear attention (36):
+The 2017 Transformer block has been refined piece by piece. By 2025–2026 the open frontier models (Llama 3/4, Qwen3, DeepSeek-V3, Gemma 3, OLMo 2/3, Kimi K2, gpt-oss, ...) agree on a fairly standard **dense block**, often combined with MoE (notebook 44), MLA (46) or hybrid linear attention (49):
 
 | component | replaces | origin |
 |---|---|---|
@@ -198,8 +198,8 @@ print("".join(chars[i] for i in idx[0].tolist()))
 #%% md
 ## Where this leaves us (late 2026)
 - **Dense block:** RMSNorm + RoPE + GQA/MLA + QK-norm + SwiGLU, in pre-norm residual form. Every piece is in this repo.
-- **Sparsity:** fine-grained MoE with shared experts (notebook 32).
-- **Long context:** learned sparse attention and hybrid local/global stacks (notebook 39), linear-memory layers (Gated DeltaNet, notebook 36) and compressed KV caches (MLA, notebook 34).
-- **Post-training:** SFT, then RL with verifiable rewards (GRPO family, notebook 35) to train reasoning.
-- **Generation beyond text:** diffusion / flow matching (27, 30) with Transformer backbones.
+- **Sparsity:** fine-grained MoE with shared experts (notebook 44).
+- **Long context:** learned sparse attention and hybrid local/global stacks (notebook 54), linear-memory layers (Gated DeltaNet, notebook 49) and compressed KV caches (MLA, notebook 46).
+- **Post-training:** SFT, then RL with verifiable rewards (GRPO family, notebook 48) to train reasoning.
+- **Generation beyond text:** diffusion / flow matching (33, 37) with Transformer backbones.
 - And still at the core: the weighted sum + nonlinearity of 1943 (notebook 01), trained by the backprop of 1986 (notebook 08).

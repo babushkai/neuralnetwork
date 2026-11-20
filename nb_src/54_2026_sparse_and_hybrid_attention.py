@@ -1,7 +1,7 @@
 #%% md
 # 2026 — Learned Sparse Attention and Hybrid Local/Global Stacks
 
-**Papers and systems:** DeepSeek-AI, *"DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models"* (arXiv 2512.02556), which introduced **DeepSeek Sparse Attention (DSA)**. Sliding-window/global interleaving: Longformer (2020), Mistral (2023), Gemma 2/3 (2024–25). Through 2026 the frontier open-weight models (DeepSeek-V4, the GLM-5 family, Kimi, MiMo, MiniMax, Nemotron) all handle long contexts by **not letting every token attend to every other token**. They combine learned sparse attention, local attention and linear/SSM layers (notebooks 31, 36) in hybrid stacks, on top of very sparse MoE (32).
+**Papers and systems:** DeepSeek-AI, *"DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models"* (arXiv 2512.02556), which introduced **DeepSeek Sparse Attention (DSA)**. Sliding-window/global interleaving: Longformer (2020), Mistral (2023), Gemma 2/3 (2024–25). Through 2026 the frontier open-weight models (DeepSeek-V4, the GLM-5 family, Kimi, MiMo, MiniMax, Nemotron) all handle long contexts by **not letting every token attend to every other token**. They combine learned sparse attention, local attention and linear/SSM layers (notebooks 39, 49) in hybrid stacks, on top of very sparse MoE (44).
 
 ### 1. DSA: a lightning indexer picks the keys
 A tiny, cheap scorer (few heads, small dimension, ReLU instead of softmax, FP8 in production) rates every past token:
@@ -178,4 +178,4 @@ print(f"keys attended per query: dense up to {T_ctx}, DSA {32}  ->  core-attenti
 ## Takeaways
 - **Local-only** attention can't retrieve beyond its window, no matter how it is trained. One global layer (**hybrid**) restores retrieval while most layers stay cheap.
 - **DSA** keeps most of the dense model's accuracy (close to it, run to run) with only $k$ keys per query, as long as the indexer is first trained to imitate dense attention. Picking keys with an untrained indexer breaks the model. At this toy length $k$ is a quarter of the context; at 128K tokens, DeepSeek's $k=2048$ is under 2%.
-- The 2026 long-context recipe stacks these ideas: sparse or linear global layers, local layers, MLA-style compressed caches (34) and very sparse MoE (32).
+- The 2026 long-context recipe stacks these ideas: sparse or linear global layers, local layers, MLA-style compressed caches (46) and very sparse MoE (44).
