@@ -72,7 +72,7 @@ print(f"receptive field: {model.receptive_field} samples = {model.receptive_fiel
 #%%
 qt = torch.tensor(q, device=device)
 opt = torch.optim.Adam(model.parameters(), lr=2e-3)
-L = 1024; losses = []
+L = 640; losses = []
 for step in range(1200):
     ix = torch.randint(0, len(qt) - L - 1, (16,), device=device)
     x = torch.stack([qt[i:i + L] for i in ix]); y = torch.stack([qt[i + 1:i + L + 1] for i in ix])
@@ -95,7 +95,7 @@ def generate(seed, n, temperature=0.9):
     return np.array(seq)
 
 seed_len = 600
-gen = generate(q[:seed_len], 2400)
+gen = generate(q[:seed_len], 1200)
 audio = mu_decode(gen)
 fig, axes = plt.subplots(2, 1, figsize=(13, 5))
 axes[0].plot(np.arange(len(audio)) / SR, audio, lw=0.6); axes[0].axvline(seed_len / SR, c="r", ls="--", label="generation starts")
