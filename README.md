@@ -1,20 +1,109 @@
-# Neural Networks, 1943 → 2026
+<div align="center">
 
-One runnable Jupyter notebook per milestone in neural-network history, from the McCulloch–Pitts neuron to the designs inside late-2026 frontier models (DeepSeek-V4/V4.1, Qwen3.5/3.8, Kimi K3/K3.1, Nemotron 3). Each notebook explains the idea (paper, key equations, why it mattered), implements it **from scratch**, trains it on a small task, and shows the result.
+# 🧠 Neural Networks, 1943 → 2026
 
-- **Runs anywhere:** every notebook runs on a laptop CPU. A GPU is optional and used automatically when present: CUDA, then Apple Silicon (MPS), then CPU.
-- **Offline:** no dataset downloads. Notebooks use scikit-learn's bundled 8×8 digits, synthetic data, or small text corpora generated inside the notebook.
-- **Self-contained:** each notebook stands alone; just open it and run all cells.
+### 83 years of deep learning. 69 notebooks. One laptop.
 
-## Timeline
+**Re-live the history of neural networks by building it, from a 1943 logic neuron to the architectures inside November 2026's frontier LLMs.**
 
-### Foundations (1943–1997)
-| # | Year | Notebook | Idea |
+![notebooks](https://img.shields.io/badge/notebooks-69-blueviolet)
+![span](https://img.shields.io/badge/1943%20%E2%86%92%202026-83%20years-orange)
+![from scratch](https://img.shields.io/badge/implemented-from%20scratch-success)
+![offline](https://img.shields.io/badge/datasets-zero%20downloads-informational)
+![device](https://img.shields.io/badge/runs%20on-CPU%20%7C%20Apple%20MPS%20%7C%20CUDA-lightgrey)
+
+</div>
+
+---
+
+Most deep-learning tutorials start in 2017 and stop at "now call `AutoModel.from_pretrained`". This repo starts with **McCulloch and Pitts wiring logic gates out of threshold units** and ends with **the Gated DeltaNet-2 layers, LatentMoE experts and attention-over-depth residuals** that shipped in open-weight models months ago.
+
+Every one of the 69 notebooks:
+
+| | |
+|---|---|
+| 📜 **Reads the paper** | the idea, the key equations, and why it mattered at the time |
+| 🔧 **Builds it from scratch** | NumPy for the classics, plain PyTorch afterwards. No `nn.Transformer`, no model hubs |
+| 🏋️ **Trains it** | on a task small enough for a laptop, with no dataset downloads |
+| 🔬 **Shows the result, honestly** | when a toy can't reproduce a paper's at-scale effect, the notebook says so instead of faking it |
+
+Open any notebook, press *Run All*, and watch an idea work.
+
+---
+
+## ⚡ Moments you'll see for yourself
+
+Real outputs from the committed notebooks, not paper claims:
+
+| | what happens | notebook |
+|---|---|---|
+| 🚫 | No straight line can solve XOR: the best single threshold unit tops out at **75%**. One hidden layer plus backprop solves it exactly. | [04](notebooks/04_1969_xor_problem.ipynb) → [08](notebooks/08_1986_backpropagation_mlp.ipynb) |
+| 🧱 | A plain 42-layer network collapses to **78%** test accuracy; add skip connections and the same depth hits **99.2%**. | [22 ResNet](notebooks/22_2015_resnet.ipynb) |
+| 🕸️ | With only **8 labelled nodes**, an MLP gets 43%; a graph convolution, which also reads the edges, gets **99.6%**. | [26 GCN](notebooks/26_2016_graph_convolutional_network.ipynb) |
+| 🎯 | CLIP classifies digits **zero-shot, from text prompts alone**, at **99.7%**. | [34 CLIP](notebooks/34_2021_clip.ipynb) |
+| 🧮 | FlashAttention gives *the same answer* (error ~1e-6) while never holding more than a **256× smaller** block of the attention matrix. | [36](notebooks/36_2022_flash_attention.ipynb) |
+| 🐍 | On selective copying, Mamba's input-dependent state reaches **74.5%** while a classic time-invariant SSM sits at 14.9%, near chance. | [39 Mamba](notebooks/39_2023_mamba_selective_ssm.ipynb) |
+| 🚀 | A draft model **72× smaller** than the target lets speculative decoding emit up to **1.77 tokens per big-model call**, with samples from exactly the target distribution. | [40](notebooks/40_2023_speculative_decoding.ipynb) |
+| 📉 | A KAN with **150 parameters** fits $e^{\sin \pi x + y^2}$ 4× more accurately than a **4,417-parameter** MLP. | [45 KAN](notebooks/45_2024_kan.ipynb) |
+| 🗜️ | DeepSeek's multi-head latent attention caches **48 floats per token** where standard attention needs 256, and weight absorption reproduces the outputs exactly. | [46 MLA](notebooks/46_2024_multi_head_latent_attention.ipynb) |
+| 🤔 | GRPO, with reinforcement learning from a checkable reward alone, takes a policy from **4% → 89%** success on a digit-sum puzzle. | [48 GRPO](notebooks/48_2025_grpo_reasoning_rl.ipynb) |
+| 🔎 | Local-only attention can't retrieve beyond its window (16%); one global layer fixes it (**100%**). DeepSeek Sparse Attention then reads only a quarter of the keys: 31% with an untrained indexer → **99.9%** after distillation. | [54](notebooks/54_2026_sparse_and_hybrid_attention.ipynb) |
+| 🧭 | Attention with *no position encoding* fails a lag-7 copy (18%). Put one Kimi Delta Attention layer underneath, as in Kimi K3, and it reaches **97%**: the recurrent layer supplies position. | [59 KDA](notebooks/59_2026_kimi_delta_attention.ipynb) |
+| 📏 | Under PreNorm the residual stream swells **2.3×** over 24 sub-layers; Kimi's Attention Residuals keep it bounded. | [61 AttnRes](notebooks/61_2026_attention_residuals.ipynb) |
+
+---
+
+## 🌳 The family tree
+
+How the ideas descend from each other. Every box is a notebook.
+
+```mermaid
+flowchart LR
+    MP[01 Threshold neuron<br/>1943] --> P[02 Perceptron] --> XOR[04 XOR crisis] --> BP[08 Backprop]
+    BP --> CNN[09 LeNet] --> AX[13 AlexNet] --> RES[22 ResNet]
+    BP --> RNN[10 Elman RNN] --> LSTM[11 LSTM] --> S2S[18 seq2seq] --> ATT[19 Attention]
+    ATT --> TF[27 Transformer]
+    RES --> TF
+    TF --> GPT[28 GPT] --> SCALE[30 Scaling laws] --> MOE[44 MoE] --> LMOE[62 LatentMoE]
+    TF --> FA[36 FlashAttention]
+    TF --> MLA[46 MLA] --> DSA[54 Sparse attention] --> CSA[57 DeepSeek-V4 CSA] --> IDX[65 Cheaper indexers]
+    LSTM --> MAMBA[39 Mamba] --> M3[60 Mamba-3]
+    TF --> GDN[49 Gated DeltaNet] --> KDA[59 Kimi Delta Attn] --> GDN2[63 GDN-2]
+    RES --> MHC[55 mHC] --> AR[61 Attention Residuals]
+    MHC --> GR[64 Gated Residual]
+    GPT --> GRPO[48 GRPO reasoning]
+    GDN2 --> CAP[69 Late-2026 capstone]
+    IDX --> CAP
+    AR --> CAP
+    LMOE --> CAP
+```
+
+---
+
+## 🧭 Pick your path
+
+Don't want to do all 69 in order? Take a track.
+
+| track | for you if… | notebooks |
+|---|---|---|
+| ☕ **The espresso tour** (an afternoon) | you want the whole arc, fast | 02 → 04 → 08 → 22 → 27 → 28 → 39 → 54 → 69 |
+| 🤖 **Build an LLM, 2018 → 2026** | you work with LLMs and want to know what's inside | 27 → 28 → 30 → 53 → 44 → 46 → 47 → 50 → 58 → 69 |
+| 📜 **Long context without quadratic cost** | you care about 1M-token contexts | 36 → 39 → 49 → 54 → 57 → 59 → 60 → 63 → 65 → 66 |
+| 🎨 **Generative models** | images, sound and samples from noise | 07 → 15 → 17 → 25 → 33 → 37 → 41 → 52 |
+| 🧪 **Training & optimization** | the "how", not the "what" | 08 → 20 → 21 → 24 → 35 → 42 → 53 → 55 → 68 |
+| 🎲 **Learning from rewards** | RL, preferences and reasoning | 16 → 38 → 48 → 51 → 67 |
+
+---
+
+## 📚 The timeline
+
+### 🏛️ Foundations (1943–1997): *can machines learn at all?*
+| # | Year | Notebook | The idea |
 |---|---|---|---|
 | 01 | 1943 | [McCulloch–Pitts neuron](notebooks/01_1943_mcculloch_pitts_neuron.ipynb) | threshold logic units |
 | 02 | 1958 | [Perceptron](notebooks/02_1958_perceptron.ipynb) | the first learning rule, convergence theorem |
 | 03 | 1960 | [ADALINE / LMS](notebooks/03_1960_adaline.ipynb) | gradient descent on squared error |
-| 04 | 1969 | [The XOR problem](notebooks/04_1969_xor_problem.ipynb) | limits of single layers |
+| 04 | 1969 | [The XOR problem](notebooks/04_1969_xor_problem.ipynb) | the limits of single layers, the first AI winter |
 | 05 | 1982 | [Hopfield network](notebooks/05_1982_hopfield_network.ipynb) | energy-based associative memory |
 | 06 | 1982 | [Self-organizing map](notebooks/06_1982_self_organizing_map.ipynb) | competitive, topology-preserving learning |
 | 07 | 1985 | [Boltzmann machine / RBM](notebooks/07_1985_boltzmann_machine_rbm.ipynb) | stochastic generative nets, contrastive divergence |
@@ -23,8 +112,8 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 10 | 1990 | [Elman RNN](notebooks/10_1990_elman_rnn.ipynb) | recurrence, BPTT |
 | 11 | 1997 | [LSTM](notebooks/11_1997_lstm.ipynb) | gated memory vs vanishing gradients |
 
-### The deep learning revival (2006–2016)
-| # | Year | Notebook | Idea |
+### 🔥 The deep learning revival (2006–2016): *depth, data, GPUs*
+| # | Year | Notebook | The idea |
 |---|---|---|---|
 | 12 | 2006 | [Deep autoencoder](notebooks/12_2006_deep_autoencoder.ipynb) | greedy layer-wise pre-training |
 | 13 | 2012 | [AlexNet](notebooks/13_2012_alexnet.ipynb) | ReLU, dropout, augmentation, GPUs |
@@ -42,8 +131,8 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 25 | 2016 | [WaveNet](notebooks/25_2016_wavenet.ipynb) | dilated causal convolutions, raw audio |
 | 26 | 2016 | [Graph convolutional network](notebooks/26_2016_graph_convolutional_network.ipynb) | message passing, over-smoothing |
 
-### Transformers and scale (2017–2022)
-| # | Year | Notebook | Idea |
+### ⚡ Transformers and scale (2017–2022): *attention is all you need*
+| # | Year | Notebook | The idea |
 |---|---|---|---|
 | 27 | 2017 | [Transformer](notebooks/27_2017_transformer.ipynb) | multi-head attention, encoder–decoder |
 | 28 | 2018 | [GPT](notebooks/28_2018_gpt.ipynb) | decoder-only next-token prediction |
@@ -57,8 +146,8 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 36 | 2022 | [FlashAttention](notebooks/36_2022_flash_attention.ipynb) | tiled exact attention, online softmax |
 | 37 | 2022 | [Flow matching](notebooks/37_2022_flow_matching.ipynb) | rectified flow, reflow |
 
-### The LLM era (2023–2025)
-| # | Year | Notebook | Idea |
+### 🤖 The LLM era (2023–2025): *alignment, efficiency, reasoning*
+| # | Year | Notebook | The idea |
 |---|---|---|---|
 | 38 | 2023 | [RLHF → DPO](notebooks/38_2023_dpo_preference_optimization.ipynb) | preference optimisation without RL |
 | 39 | 2023 | [Mamba](notebooks/39_2023_mamba_selective_ssm.ipynb) | selective state spaces, parallel scan |
@@ -76,51 +165,57 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 51 | 2025 | [Tiny Recursive Model](notebooks/51_2025_tiny_recursive_model.ipynb) | recursion + deep supervision |
 | 52 | 2025 | [Diffusion language model](notebooks/52_2025_diffusion_language_model.ipynb) | LLaDA masked diffusion, infilling |
 
-### 2026: inside today's frontier models
-| # | Year | Notebook | Idea |
+### 🛰️ 2026: inside today's frontier models
+| # | Notebook | The idea | Seen in |
 |---|---|---|---|
-| 53 | 2026 | [Modern LLM recipe](notebooks/53_2026_modern_llm_recipe.ipynb) | RMSNorm, RoPE, GQA, QK-norm, SwiGLU, Muon |
-| 54 | 2026 | [Sparse & hybrid attention](notebooks/54_2026_sparse_and_hybrid_attention.ipynb) | DeepSeek Sparse Attention (lightning indexer), local/global hybrids |
-| 55 | 2026 | [mHC](notebooks/55_2026_manifold_constrained_hyper_connections.ipynb) | manifold-constrained hyper-connections, Sinkhorn (DeepSeek) |
-| 56 | 2026 | [Engram](notebooks/56_2026_engram_conditional_memory.ipynb) | conditional memory via hashed N-gram lookup (DeepSeek) |
-| 57 | 2026 | [Compressed sparse attention](notebooks/57_2026_compressed_sparse_attention.ipynb) | DeepSeek-V4 CSA + HCA, attention sinks, 1M context |
-| 58 | 2026 | [Frontier capstone](notebooks/58_2026_frontier_model_capstone.ipynb) | Qwen3.5/V4-style: hybrid DeltaNet + gated attention, MoE, MTP, Muon |
-| 59 | 2026 | [Kimi Delta Attention](notebooks/59_2026_kimi_delta_attention.ipynb) | Kimi K3/K3.1: channel-wise gated delta rule, chunkwise algorithm, NoPE hybrid |
-| 60 | 2026 | [Mamba-3](notebooks/60_2026_mamba3.ipynb) | trapezoidal discretization, complex state as data-dependent RoPE, MIMO; parity |
-| 61 | 2026 | [Attention Residuals](notebooks/61_2026_attention_residuals.ipynb) | Kimi AttnRes: softmax attention over depth instead of a fixed residual sum |
-| 62 | 2026 | [LatentMoE](notebooks/62_2026_latent_moe.ipynb) | Nemotron 3 / Muse Spark: experts in a compressed latent space, 4× experts and top-k |
-| 63 | 2026 | [Gated DeltaNet-2](notebooks/63_2026_gated_deltanet_2.ipynb) | channel-wise erase and write gates, decoupled from each other |
-| 64 | 2026 | [Gated Residual](notebooks/64_2026_gated_residual.ipynb) | Qwen3.8-Next: widened residual with element-wise read and scalar write gates |
-| 65 | 2026 | [Cheaper sparse-attention indexers](notebooks/65_2026_cheaper_sparse_attention_indexers.ipynb) | Qwen Sparse Attention block indexer, DeepSeek-V4.1 CSA2 index reuse |
-| 66 | 2026 | [Causal encoder–decoder](notebooks/66_2026_causal_encoder_decoder.ipynb) | DeepSeek-V4.1-Flash: encoder-only prefill, decoder KV from the encoder's state |
-| 67 | 2026 | [Looped transformers](notebooks/67_2026_looped_transformers.ipynb) | recurrent depth: weights reused across passes, test-time loops |
-| 68 | 2026 | [Constant LR + checkpoint averaging](notebooks/68_2026_constant_lr_checkpoint_averaging.ipynb) | cosine vs. WSD vs. no decay with weight averaging (Kolibri-1) |
-| 69 | 2026 | [Late-2026 frontier capstone](notebooks/69_2026_late_2026_frontier_capstone.ipynb) | GDN-2 + block-indexed sparse attention + AttnRes + LatentMoE + MTP + Muon |
+| 53 | [Modern LLM recipe](notebooks/53_2026_modern_llm_recipe.ipynb) | RMSNorm, RoPE, GQA, QK-norm, SwiGLU, Muon | nearly every 2026 LLM |
+| 54 | [Sparse & hybrid attention](notebooks/54_2026_sparse_and_hybrid_attention.ipynb) | lightning indexer, local/global hybrids | DeepSeek-V3.2 |
+| 55 | [mHC](notebooks/55_2026_manifold_constrained_hyper_connections.ipynb) | manifold-constrained hyper-connections, Sinkhorn | DeepSeek-V4 |
+| 56 | [Engram](notebooks/56_2026_engram_conditional_memory.ipynb) | conditional memory via hashed N-gram lookup | DeepSeek |
+| 57 | [Compressed sparse attention](notebooks/57_2026_compressed_sparse_attention.ipynb) | CSA + HCA, attention sinks, 1M context | DeepSeek-V4 |
+| 58 | [Early-2026 capstone](notebooks/58_2026_frontier_model_capstone.ipynb) | hybrid DeltaNet + gated attention, MoE, MTP, Muon | Qwen3.5-style |
+| 59 | [Kimi Delta Attention](notebooks/59_2026_kimi_delta_attention.ipynb) | channel-wise gated delta rule, chunkwise algorithm, NoPE | Kimi K3 / K3.1 |
+| 60 | [Mamba-3](notebooks/60_2026_mamba3.ipynb) 🆕 | trapezoidal discretization, complex state as data-dependent RoPE, MIMO | SSM hybrids |
+| 61 | [Attention Residuals](notebooks/61_2026_attention_residuals.ipynb) 🆕 | softmax attention over *depth* instead of a fixed residual sum | Kimi |
+| 62 | [LatentMoE](notebooks/62_2026_latent_moe.ipynb) 🆕 | experts in a compressed latent space: 4× the experts at the same communication cost | Nemotron 3, Muse Spark |
+| 63 | [Gated DeltaNet-2](notebooks/63_2026_gated_deltanet_2.ipynb) 🆕 | separate channel-wise erase and write gates | NVIDIA |
+| 64 | [Gated Residual](notebooks/64_2026_gated_residual.ipynb) 🆕 | widened residual, element-wise read gate, scalar write gate | Qwen3.8-Next |
+| 65 | [Cheaper sparse-attention indexers](notebooks/65_2026_cheaper_sparse_attention_indexers.ipynb) 🆕 | block-compressed indexer, index reuse across layers | Qwen3.8, DeepSeek-V4.1 |
+| 66 | [Causal encoder–decoder](notebooks/66_2026_causal_encoder_decoder.ipynb) 🆕 | encoder-only prefill; decoder KV from the encoder's state | DeepSeek-V4.1-Flash |
+| 67 | [Looped transformers](notebooks/67_2026_looped_transformers.ipynb) 🆕 | recurrent depth, test-time loops | Nanbeige4.2, Dory 1.0 |
+| 68 | [Constant LR + checkpoint averaging](notebooks/68_2026_constant_lr_checkpoint_averaging.ipynb) 🆕 | cosine vs. WSD vs. never decaying | Kolibri-1 |
+| 69 | [Late-2026 capstone](notebooks/69_2026_late_2026_frontier_capstone.ipynb) 🆕 | GDN-2 + sparse attention + AttnRes + LatentMoE + MTP + Muon, together | all of the above |
 
-Notebooks 01–08 use pure NumPy. From 09 onward they use PyTorch.
+> **Where's the frontier, honestly?** No single notebook is "the state of the art". The late-2026 open frontier is a *recipe*: mostly linear-memory layers, a few sparse global layers, residual paths that learn to mix depth, and very sparse MoE (69). Labs still disagree on which variant of each piece is best. Closed labs (OpenAI, Anthropic, Google) don't publish their architectures, so only open designs are covered here.
 
-## Quick start
+---
+
+## 🚀 Quick start
 
 ```bash
+git clone https://github.com/babushkai/neuralnetwork && cd neuralnetwork
 python -m venv .venv && source .venv/bin/activate     # or: uv venv && source .venv/bin/activate
 pip install -r requirements.txt
 jupyter lab notebooks/
 ```
 
-### Choosing the device
-Each PyTorch notebook picks `cuda` → `mps` → `cpu` automatically. To force one:
+Every PyTorch notebook picks its device automatically: **CUDA → Apple MPS → CPU**. To force one:
 
 ```bash
 NN_DEVICE=cpu jupyter lab notebooks/
 ```
 
-Run times on an Apple M1 Pro with MPS: most notebooks take seconds to a few minutes, and the longest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstone) take 5–10 minutes. CPU-only: most notebooks run at a similar speed, but these take 10–20 minutes: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58). Kimi Delta Attention (59) takes about 35 minutes on CPU (4 minutes on MPS). The DQN notebook (16) deliberately runs on CPU, which is faster for its tiny networks. Notebooks 60 and 62–69 are committed **without saved outputs**: run them yourself (expect roughly 5–20 minutes each on an Apple-silicon GPU, faster on CUDA).
+**How long does it take?** On an Apple M1 Pro (MPS), most notebooks run in seconds to a few minutes; the heaviest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstones) take 5–10 minutes. CPU-only works too: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58) take 10–20 minutes, and Kimi Delta Attention (59) about 35. DQN (16) deliberately runs on CPU, which is faster for its tiny networks.
 
-## Repository layout
+> 🆕 **Fresh off the press:** notebooks **60 and 62–69** are committed **without saved outputs** (they're the newest, and are heavier). Run them yourself; expect roughly 5–20 minutes each on Apple silicon, faster on CUDA. Found a bug? Issues and PRs are very welcome.
+
+---
+
+## 🧰 Under the hood
 
 ```
-notebooks/      the notebooks (committed with outputs so they can be read on GitHub)
-nb_src/         source of each notebook in a light cell-marker format ("#%% md" / "#%%")
+notebooks/      the 69 notebooks (most committed with outputs, so they read like articles on GitHub)
+nb_src/         the source of each notebook, in a light "#%% md" / "#%%" cell format that diffs cleanly
 tools/
   build.py        nb_src/*.py  ->  notebooks/*.ipynb (expands shared snippets)
   snippets/       shared code: device setup, digits loader, text corpora, a tiny GPT
@@ -128,9 +223,31 @@ tools/
   show_outputs.py print the text outputs of executed notebooks
 ```
 
-To edit a notebook, either change the `.ipynb` directly, or edit `nb_src/<name>.py` and run `python tools/build.py <name>` (this overwrites the `.ipynb`). `tools/run_all.sh` rebuilds everything and re-executes it.
+To change a notebook, edit `nb_src/<name>.py` and run `python tools/build.py <name>` (this regenerates the `.ipynb`, without outputs), or edit the `.ipynb` directly. `tools/run_all.sh` rebuilds and re-executes everything.
 
-## Notes
+**Design rules the notebooks follow**
+- **No magic:** no pretrained weights, no model hubs, no high-level layers that hide the idea being taught.
+- **No downloads:** scikit-learn's bundled 8×8 digits, synthetic tasks, and text corpora generated inside the notebook. Clone it on a plane and it works.
+- **Standalone:** every notebook runs top to bottom on its own. 01–08 use pure NumPy; from 09 onward, PyTorch.
+- **Honest at toy scale:** these are teaching-scale models (tiny networks, small data, short runs). They show the *mechanism*, not leaderboard numbers. When a small model can't show an effect a paper measured at 48B parameters, the notebook says so.
 
-- These are **teaching-scale** implementations: tiny models, small data, short training runs. They show the mechanism, not state-of-the-art numbers. Where a toy result does not show the effect seen at scale, the notebook says so.
-- The 2026 notebooks follow the published designs: the DeepSeek-V4 technical report (arXiv 2606.19348), the mHC (arXiv 2512.24880) and Engram (arXiv 2601.07372) papers, DeepSeek-V3.2's sparse attention (arXiv 2512.02556), Qwen's gated attention (arXiv 2505.06708), the Qwen3.5 model card, and Kimi Linear (arXiv 2510.26692) with Sebastian Raschka's Kimi K3/K3.1 architecture notes. Notebooks 60–69 follow Mamba-3 (arXiv 2603.15569), Attention Residuals (arXiv 2603.15031), the Nemotron 3 Super/Ultra reports (arXiv 2604.12374, 2606.15007), Gated DeltaNet-2 (arXiv 2605.22791), the Qwen3.8-Next architecture report (arXiv 2608.30320), DeepSeek-V4.1-Flash (arXiv 2609.19969), and Raschka's notes on looped transformers (September 2026), the October 2026 open-model roundup and pre-training without LR decay (November 2026). Where a detail was not specified, the notebook says which choice it made.
+---
+
+## 📖 Sources
+
+Each notebook cites its papers at the top. The 2026 notebooks follow the published designs:
+- **DeepSeek:** V4 technical report (arXiv 2606.19348), V4.1-Flash (2609.19969), mHC (2512.24880), Engram (2601.07372), V3.2 sparse attention (2512.02556)
+- **Qwen:** gated attention (2505.06708), the Qwen3.5 model card, the Qwen3.8-Next architecture report (2608.30320)
+- **Kimi / Moonshot:** Kimi Linear (2510.26692), Attention Residuals (2603.15031)
+- **NVIDIA:** Nemotron 3 Super/Ultra (2604.12374, 2606.15007), Gated DeltaNet-2 (2605.22791)
+- **Mamba-3** (2603.15569)
+- **Sebastian Raschka's 2026 architecture notes:** Kimi K3/K3.1, looped transformers, the October 2026 open-model roundup, and pre-training without LR decay
+
+Where a paper leaves a detail unspecified, the notebook says which choice it made.
+
+<div align="center">
+
+**Every architecture here, from 1943 to 2026, is still a weighted sum followed by a nonlinearity.**<br/>
+**Come see how far that idea went.** ⭐
+
+</div>
