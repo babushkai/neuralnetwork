@@ -1,6 +1,6 @@
 # Neural Networks, 1943 → 2026
 
-One runnable Jupyter notebook per milestone in neural-network history, from the McCulloch–Pitts neuron to the designs inside 2026 frontier models (DeepSeek-V4, Qwen3.5). Each notebook explains the idea (paper, key equations, why it mattered), implements it **from scratch**, trains it on a small task, and shows the result.
+One runnable Jupyter notebook per milestone in neural-network history, from the McCulloch–Pitts neuron to the designs inside 2026 frontier models (DeepSeek-V4, Qwen3.5, Kimi K3). Each notebook explains the idea (paper, key equations, why it mattered), implements it **from scratch**, trains it on a small task, and shows the result.
 
 - **Runs anywhere:** every notebook runs on a laptop CPU. A GPU is optional and used automatically when present: CUDA, then Apple Silicon (MPS), then CPU.
 - **Offline:** no dataset downloads. Notebooks use scikit-learn's bundled 8×8 digits, synthetic data, or small text corpora generated inside the notebook.
@@ -85,6 +85,7 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 56 | 2026 | [Engram](notebooks/56_2026_engram_conditional_memory.ipynb) | conditional memory via hashed N-gram lookup (DeepSeek) |
 | 57 | 2026 | [Compressed sparse attention](notebooks/57_2026_compressed_sparse_attention.ipynb) | DeepSeek-V4 CSA + HCA, attention sinks, 1M context |
 | 58 | 2026 | [Frontier capstone](notebooks/58_2026_frontier_model_capstone.ipynb) | Qwen3.5/V4-style: hybrid DeltaNet + gated attention, MoE, MTP, Muon |
+| 59 | 2026 | [Kimi Delta Attention](notebooks/59_2026_kimi_delta_attention.ipynb) | Kimi K3/K3.1: channel-wise gated delta rule, chunkwise algorithm, NoPE hybrid |
 
 Notebooks 01–08 use pure NumPy. From 09 onward they use PyTorch.
 
@@ -122,4 +123,4 @@ To edit a notebook, either change the `.ipynb` directly, or edit `nb_src/<name>.
 ## Notes
 
 - These are **teaching-scale** implementations: tiny models, small data, short training runs. They show the mechanism, not state-of-the-art numbers. Where a toy result does not show the effect seen at scale, the notebook says so.
-- The 2026 notebooks follow the published designs: the DeepSeek-V4 technical report (arXiv 2606.19348), the mHC (arXiv 2512.24880) and Engram (arXiv 2601.07372) papers, DeepSeek-V3.2's sparse attention (arXiv 2512.02556), Qwen's gated attention (arXiv 2505.06708), and the Qwen3.5 model card. Where a detail was not specified, the notebook says which choice it made.
+- The 2026 notebooks follow the published designs: the DeepSeek-V4 technical report (arXiv 2606.19348), the mHC (arXiv 2512.24880) and Engram (arXiv 2601.07372) papers, DeepSeek-V3.2's sparse attention (arXiv 2512.02556), Qwen's gated attention (arXiv 2505.06708), the Qwen3.5 model card, and Kimi Linear (arXiv 2510.26692) with Sebastian Raschka's Kimi K3/K3.1 architecture notes. Where a detail was not specified, the notebook says which choice it made.
