@@ -115,7 +115,7 @@ for name, mk in configs.items():
 #%%
 def get_batch(src, B=32):
     ix = torch.randint(0, len(src) - 129, (B,), device=device)
-    return torch.stack([src[i:i + 128] for i in ix]), torch.stack([src[i + 1:i + 129] for i in ix])
+    return src[ix[:, None] + torch.arange(128, device=src.device)], src[ix[:, None] + torch.arange(1, 129, device=src.device)]
 
 def train(make_ffn, steps=800, lr=3e-3):
     seed_everything(0); m = LM(make_ffn).to(device)
@@ -129,7 +129,7 @@ def train(make_ffn, steps=800, lr=3e-3):
     with torch.no_grad():
         for _ in range(20):
             ix = torch.randint(0, len(val_data) - 129, (32,), generator=g).to(device)
-            x = torch.stack([val_data[i:i + 128] for i in ix]); y = torch.stack([val_data[i + 1:i + 129] for i in ix])
+            x = val_data[ix[:, None] + torch.arange(128, device=val_data.device)]; y = val_data[ix[:, None] + torch.arange(1, 129, device=val_data.device)]
             vals.append(F.cross_entropy(m(x).reshape(-1, V), y.reshape(-1)).item())
     return m, float(np.mean(vals)), time.time() - t0
 

@@ -48,11 +48,11 @@ def train(use_mtp, steps=800, lam=0.3, B=32):
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, 2e-3, total_steps=steps, pct_start=0.1)
     for s in range(steps):
         ix = torch.randint(0, len(train_data) - m.ctx - 2, (B,), device=device)
-        x = torch.stack([train_data[i:i + m.ctx] for i in ix])
-        y1 = torch.stack([train_data[i + 1:i + m.ctx + 1] for i in ix])
+        x = train_data[ix[:, None] + torch.arange(m.ctx, device=train_data.device)]
+        y1 = train_data[ix[:, None] + torch.arange(1, m.ctx + 1, device=train_data.device)]
         if use_mtp:
             main, mtp = m.forward_mtp(x)
-            y2 = torch.stack([train_data[i + 2:i + m.ctx + 1] for i in ix])            # targets two steps ahead
+            y2 = train_data[ix[:, None] + torch.arange(2, m.ctx + 1, device=train_data.device)]            # targets two steps ahead
             loss = F.cross_entropy(main.reshape(-1, V), y1.reshape(-1)) + lam * F.cross_entropy(mtp.reshape(-1, V), y2.reshape(-1))
         else:
             loss = F.cross_entropy(m(x).reshape(-1, V), y1.reshape(-1))
@@ -78,7 +78,7 @@ def mtp_acceptance(m, n_batches=10, B=16):
     g = torch.Generator().manual_seed(1); agree = total = 0
     for _ in range(n_batches):
         ix = torch.randint(0, len(val_data) - m.ctx - 2, (B,), generator=g).to(device)
-        x = torch.stack([val_data[i:i + m.ctx] for i in ix])
+        x = val_data[ix[:, None] + torch.arange(m.ctx, device=val_data.device)]
         h = m.hidden(x); g1 = m.head(m.ln(h)).argmax(-1)                                  # main model's greedy guesses
         h1 = m.mtp_proj(torch.cat([m.mtp_norm_h(h), m.mtp_norm_e(m.tok(g1))], -1))
         g2 = m.head(m.ln(m.mtp_block(h1 + m.pos(torch.arange(h1.shape[1], device=device))))).argmax(-1)

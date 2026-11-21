@@ -100,8 +100,9 @@ class CausalEncoderDecoder(nn.Module):
 ## Train: decoder-only vs. causal encoder–decoder (same depth, same width)
 #%%
 def get_batch(src, B=32, T=256):
-    ix = torch.randint(0, len(src) - T - 1, (B,), device=device)
-    return torch.stack([src[i:i + T] for i in ix]), torch.stack([src[i + 1:i + T + 1] for i in ix])
+    ix = torch.randint(0, len(src) - T - 1, (B,), device=src.device)
+    w = src[ix[:, None] + torch.arange(T + 1, device=src.device)]                 # one gather, no per-row Python loop
+    return w[:, :-1], w[:, 1:]
 
 def train(model, steps=1000, lr=2e-3):
     seed_everything(0); model = model.to(device)
@@ -114,7 +115,7 @@ def train(model, steps=1000, lr=2e-3):
     with torch.no_grad():
         for _ in range(20):
             ix = torch.randint(0, len(val_data) - 257, (32,), generator=g).to(device)
-            x = torch.stack([val_data[i:i + 256] for i in ix]); y = torch.stack([val_data[i + 1:i + 257] for i in ix])
+            w = val_data[ix[:, None] + torch.arange(257, device=device)]; x, y = w[:, :-1], w[:, 1:]
             vals.append(F.cross_entropy(model(x).reshape(-1, V), y.reshape(-1)).item())
     return model, float(np.mean(vals)), time.time() - t0
 

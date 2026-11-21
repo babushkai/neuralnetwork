@@ -75,7 +75,7 @@ opt = torch.optim.Adam(model.parameters(), lr=2e-3)
 L = 640; losses = []
 for step in range(1200):
     ix = torch.randint(0, len(qt) - L - 1, (16,), device=device)
-    x = torch.stack([qt[i:i + L] for i in ix]); y = torch.stack([qt[i + 1:i + L + 1] for i in ix])
+    x = qt[ix[:, None] + torch.arange(L, device=qt.device)]; y = qt[ix[:, None] + torch.arange(1, L + 1, device=qt.device)]
     loss = F.cross_entropy(model(x)[:, :, model.receptive_field:], y[:, model.receptive_field:])
     opt.zero_grad(); loss.backward(); opt.step(); losses.append(loss.item())
     if step % 300 == 0: print(f"step {step:4d}  loss {loss.item():.3f}  (uniform guess = {math.log(256):.2f})")

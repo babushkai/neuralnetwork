@@ -54,7 +54,7 @@ class LM(nn.Module):
 
 def get_batch(src, B=32, ctx=128):
     ix = torch.randint(0, len(src) - ctx - 1, (B,), device=device)
-    return torch.stack([src[i:i + ctx] for i in ix]), torch.stack([src[i + 1:i + ctx + 1] for i in ix])
+    return src[ix[:, None] + torch.arange(ctx, device=src.device)], src[ix[:, None] + torch.arange(1, ctx + 1, device=src.device)]
 
 def train(gated, lr, steps=600):
     seed_everything(0); m = LM(gated).to(device)

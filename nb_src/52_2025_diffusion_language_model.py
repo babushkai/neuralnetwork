@@ -29,7 +29,7 @@ class Denoiser(nn.Module):
 
 def get_batch(src, B=64):
     ix = torch.randint(0, len(src) - L, (B,), device=device)
-    return torch.stack([src[i:i + L] for i in ix])
+    return src[ix[:, None] + torch.arange(L, device=src.device)]
 
 def diffusion_loss(model, x0):
     t = torch.rand(len(x0), 1, device=device).clamp(min=1e-3)

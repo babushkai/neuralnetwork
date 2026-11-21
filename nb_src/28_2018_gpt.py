@@ -76,7 +76,7 @@ losses = []
 for step in range(steps):
     model.train()
     ix = torch.randint(0, len(data) - ctx - 1, (B,), device=device)
-    x = torch.stack([data[i:i + ctx] for i in ix]); y = torch.stack([data[i + 1:i + ctx + 1] for i in ix])
+    x = data[ix[:, None] + torch.arange(ctx, device=data.device)]; y = data[ix[:, None] + torch.arange(1, ctx + 1, device=data.device)]
     loss = F.cross_entropy(model(x).reshape(-1, V), y.reshape(-1))
     opt.zero_grad(); loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step(); sched.step()
     losses.append(loss.item())

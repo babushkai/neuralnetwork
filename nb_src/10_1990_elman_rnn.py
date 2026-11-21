@@ -46,7 +46,7 @@ T, B = 48, 32
 losses = []
 for step in range(1500):
     ix = torch.randint(0, len(data) - T - 1, (B,), device=device)
-    x = torch.stack([data[i:i + T] for i in ix]); y = torch.stack([data[i + 1:i + T + 1] for i in ix])
+    x = data[ix[:, None] + torch.arange(T, device=data.device)]; y = data[ix[:, None] + torch.arange(1, T + 1, device=data.device)]
     logits, _ = model(x)
     loss = F.cross_entropy(logits.reshape(-1, V), y.reshape(-1))
     opt.zero_grad(); loss.backward()

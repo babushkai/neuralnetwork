@@ -29,7 +29,7 @@ def train_gpt(model, train_data, steps=800, B=32, lr=2e-3):
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, lr, total_steps=steps, pct_start=0.1)
     for s in range(steps):
         ix = torch.randint(0, len(train_data) - model.ctx - 1, (B,), device=train_data.device)
-        x = torch.stack([train_data[i:i + model.ctx] for i in ix]); y = torch.stack([train_data[i + 1:i + model.ctx + 1] for i in ix])
+        x = train_data[ix[:, None] + torch.arange(model.ctx, device=train_data.device)]; y = train_data[ix[:, None] + torch.arange(1, model.ctx + 1, device=train_data.device)]
         loss = F.cross_entropy(model(x).reshape(-1, model.head.out_features), y.reshape(-1))
         opt.zero_grad(); loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step(); sched.step()
     return model.eval()
@@ -39,6 +39,6 @@ def eval_loss(model, data, n=20, B=32):
     g = torch.Generator(device="cpu").manual_seed(123); losses = []
     for _ in range(n):
         ix = torch.randint(0, len(data) - model.ctx - 1, (B,), generator=g).to(data.device)
-        x = torch.stack([data[i:i + model.ctx] for i in ix]); y = torch.stack([data[i + 1:i + model.ctx + 1] for i in ix])
+        x = data[ix[:, None] + torch.arange(model.ctx, device=data.device)]; y = data[ix[:, None] + torch.arange(1, model.ctx + 1, device=data.device)]
         losses.append(F.cross_entropy(model(x).reshape(-1, model.head.out_features), y.reshape(-1)).item())
     return float(np.mean(losses))

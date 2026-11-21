@@ -36,7 +36,7 @@ def val_loss(model, n=10):
     model.eval()
     for _ in range(n):
         ix = torch.randint(0, len(val_data) - 129, (32,), generator=g).to(device)
-        x = torch.stack([val_data[i:i + 128] for i in ix]); y = torch.stack([val_data[i + 1:i + 129] for i in ix])
+        x = val_data[ix[:, None] + torch.arange(128, device=val_data.device)]; y = val_data[ix[:, None] + torch.arange(1, 129, device=val_data.device)]
         losses.append(F.cross_entropy(model(x).reshape(-1, V), y.reshape(-1)).item())
     model.train(); return float(np.mean(losses))
 
@@ -49,7 +49,7 @@ def run(kind, eval_every=100, avg_every=10, avg_window=400, ema_decay=0.995):
     for s in range(STEPS):
         for g_ in opt.param_groups: g_["lr"] = lr_at(s, kind)
         ix = torch.randint(0, len(train_data) - 129, (32,), device=device)
-        x = torch.stack([train_data[i:i + 128] for i in ix]); y = torch.stack([train_data[i + 1:i + 129] for i in ix])
+        x = train_data[ix[:, None] + torch.arange(128, device=train_data.device)]; y = train_data[ix[:, None] + torch.arange(1, 129, device=train_data.device)]
         loss = F.cross_entropy(model(x).reshape(-1, V), y.reshape(-1))
         opt.zero_grad(); loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step()
         with torch.no_grad():

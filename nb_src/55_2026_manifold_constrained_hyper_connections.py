@@ -108,7 +108,7 @@ A 12-block (24-sub-layer) model with a deliberately high learning rate, to stres
 #%%
 def get_batch(src, B=32):
     ix = torch.randint(0, len(src) - 129, (B,), device=device)
-    return torch.stack([src[i:i + 128] for i in ix]), torch.stack([src[i + 1:i + 129] for i in ix])
+    return src[ix[:, None] + torch.arange(128, device=src.device)], src[ix[:, None] + torch.arange(1, 129, device=src.device)]
 
 def train(mode, steps=500, lr=4e-3):
     seed_everything(0); m = LM(mode).to(device)

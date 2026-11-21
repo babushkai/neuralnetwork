@@ -203,14 +203,14 @@ class Muon(torch.optim.Optimizer):
 
 def get_batch(src, B=32):
     ix = torch.randint(0, len(src) - CTX - 2, (B,), device=device)
-    return torch.stack([src[i:i + CTX + 1] for i in ix])
+    return src[ix[:, None] + torch.arange(CTX + 1, device=src.device)]
 
 @torch.no_grad()
 def val_loss(m):
     m.eval(); g = torch.Generator().manual_seed(7); out = []
     for _ in range(8):
         ix = torch.randint(0, len(val_data) - CTX - 1, (32,), generator=g).to(device)
-        s = torch.stack([val_data[i:i + CTX + 1] for i in ix])
+        s = val_data[ix[:, None] + torch.arange(CTX + 1, device=val_data.device)]
         out.append(F.cross_entropy(m(s[:, :-1]).reshape(-1, V), s[:, 1:].reshape(-1)).item())
     m.train(); return float(np.mean(out))
 

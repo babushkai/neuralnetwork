@@ -147,7 +147,7 @@ A short run (400 steps), so that differences in *speed of learning* are visible 
 ctx, B, steps = 128, 32, 400
 def get_batch(src):
     ix = torch.randint(0, len(src) - ctx - 1, (B,), device=device)
-    return torch.stack([src[i:i + ctx] for i in ix]), torch.stack([src[i + 1:i + ctx + 1] for i in ix])
+    return src[ix[:, None] + torch.arange(ctx, device=src.device)], src[ix[:, None] + torch.arange(1, ctx + 1, device=src.device)]
 
 @torch.no_grad()
 def val_loss(m):

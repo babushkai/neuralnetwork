@@ -125,7 +125,7 @@ opt = torch.optim.AdamW(model.parameters(), lr=2e-3, weight_decay=0.1)
 ctx = 64
 for step in range(1000):
     ix = torch.randint(0, len(data) - ctx - 1, (32,), device=device)
-    x = torch.stack([data[i:i + ctx] for i in ix]); y = torch.stack([data[i + 1:i + ctx + 1] for i in ix])
+    x = data[ix[:, None] + torch.arange(ctx, device=data.device)]; y = data[ix[:, None] + torch.arange(1, ctx + 1, device=data.device)]
     loss = F.cross_entropy(model(x)[0].reshape(-1, V), y.reshape(-1))
     opt.zero_grad(); loss.backward(); opt.step()
     if step % 250 == 0: print(f"step {step} loss {loss.item():.3f}")

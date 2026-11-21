@@ -91,7 +91,7 @@ The Qwen report's stability evidence: at 4× the optimal LR, a plain model had 1
 #%%
 def get_batch(src, B=32):
     ix = torch.randint(0, len(src) - 129, (B,), device=device)
-    return torch.stack([src[i:i + 128] for i in ix]), torch.stack([src[i + 1:i + 129] for i in ix])
+    return src[ix[:, None] + torch.arange(128, device=src.device)], src[ix[:, None] + torch.arange(1, 129, device=src.device)]
 
 def train(mode, lr, steps=700):
     seed_everything(0); m = LM(mode).to(device)
@@ -106,7 +106,7 @@ def train(mode, lr, steps=700):
     with torch.no_grad():
         for _ in range(20):
             ix = torch.randint(0, len(val_data) - 129, (32,), generator=g).to(device)
-            x = torch.stack([val_data[i:i + 128] for i in ix]); y = torch.stack([val_data[i + 1:i + 129] for i in ix])
+            x = val_data[ix[:, None] + torch.arange(128, device=val_data.device)]; y = val_data[ix[:, None] + torch.arange(1, 129, device=val_data.device)]
             vals.append(F.cross_entropy(m(x).reshape(-1, V), y.reshape(-1)).item())
     return m, losses, gn, spikes, float(np.mean(vals))
 

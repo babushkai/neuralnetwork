@@ -205,7 +205,7 @@ A small character LM on the procedural corpus, 4 layers, same width. MIMO adds a
 #%%
 def lm_batch(src, B=32, T=128):
     ix = torch.randint(0, len(src) - T - 1, (B,), device=device)
-    return torch.stack([src[i:i + T] for i in ix]), torch.stack([src[i + 1:i + T + 1] for i in ix])
+    return src[ix[:, None] + torch.arange(T, device=src.device)], src[ix[:, None] + torch.arange(1, T + 1, device=src.device)]
 
 def train_lm(steps=600, **kw):
     seed_everything(0); m = LM(V, d=96, n_layers=4, heads=4, **kw).to(device)
@@ -219,7 +219,7 @@ def train_lm(steps=600, **kw):
         vals = []
         for _ in range(20):
             ix = torch.randint(0, len(val_data) - 129, (32,), generator=g).to(device)
-            x = torch.stack([val_data[i:i + 128] for i in ix]); y = torch.stack([val_data[i + 1:i + 129] for i in ix])
+            x = val_data[ix[:, None] + torch.arange(128, device=val_data.device)]; y = val_data[ix[:, None] + torch.arange(1, 129, device=val_data.device)]
             vals.append(F.cross_entropy(m(x).reshape(-1, V), y.reshape(-1)).item())
     return np.mean(vals), sum(p.numel() for p in m.parameters()), time.time() - t0
 

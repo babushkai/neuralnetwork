@@ -87,7 +87,7 @@ def collect_hessians(m, n_batches=8):
     with torch.no_grad():
         for _ in range(n_batches):
             ix = torch.randint(0, len(train_data) - m.ctx, (8,), device=device)
-            m(torch.stack([train_data[i:i + m.ctx] for i in ix]))
+            m(train_data[ix[:, None] + torch.arange(m.ctx, device=train_data.device)])
     for h in hooks: h.remove()
     return H
 
