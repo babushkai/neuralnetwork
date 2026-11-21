@@ -1,6 +1,6 @@
 # Neural Networks, 1943 → 2026
 
-One runnable Jupyter notebook per milestone in neural-network history, from the McCulloch–Pitts neuron to the designs inside 2026 frontier models (DeepSeek-V4, Qwen3.5, Kimi K3). Each notebook explains the idea (paper, key equations, why it mattered), implements it **from scratch**, trains it on a small task, and shows the result.
+One runnable Jupyter notebook per milestone in neural-network history, from the McCulloch–Pitts neuron to the designs inside late-2026 frontier models (DeepSeek-V4/V4.1, Qwen3.5/3.8, Kimi K3/K3.1, Nemotron 3). Each notebook explains the idea (paper, key equations, why it mattered), implements it **from scratch**, trains it on a small task, and shows the result.
 
 - **Runs anywhere:** every notebook runs on a laptop CPU. A GPU is optional and used automatically when present: CUDA, then Apple Silicon (MPS), then CPU.
 - **Offline:** no dataset downloads. Notebooks use scikit-learn's bundled 8×8 digits, synthetic data, or small text corpora generated inside the notebook.
@@ -86,6 +86,16 @@ One runnable Jupyter notebook per milestone in neural-network history, from the 
 | 57 | 2026 | [Compressed sparse attention](notebooks/57_2026_compressed_sparse_attention.ipynb) | DeepSeek-V4 CSA + HCA, attention sinks, 1M context |
 | 58 | 2026 | [Frontier capstone](notebooks/58_2026_frontier_model_capstone.ipynb) | Qwen3.5/V4-style: hybrid DeltaNet + gated attention, MoE, MTP, Muon |
 | 59 | 2026 | [Kimi Delta Attention](notebooks/59_2026_kimi_delta_attention.ipynb) | Kimi K3/K3.1: channel-wise gated delta rule, chunkwise algorithm, NoPE hybrid |
+| 60 | 2026 | [Mamba-3](notebooks/60_2026_mamba3.ipynb) | trapezoidal discretization, complex state as data-dependent RoPE, MIMO; parity |
+| 61 | 2026 | [Attention Residuals](notebooks/61_2026_attention_residuals.ipynb) | Kimi AttnRes: softmax attention over depth instead of a fixed residual sum |
+| 62 | 2026 | [LatentMoE](notebooks/62_2026_latent_moe.ipynb) | Nemotron 3 / Muse Spark: experts in a compressed latent space, 4× experts and top-k |
+| 63 | 2026 | [Gated DeltaNet-2](notebooks/63_2026_gated_deltanet_2.ipynb) | channel-wise erase and write gates, decoupled from each other |
+| 64 | 2026 | [Gated Residual](notebooks/64_2026_gated_residual.ipynb) | Qwen3.8-Next: widened residual with element-wise read and scalar write gates |
+| 65 | 2026 | [Cheaper sparse-attention indexers](notebooks/65_2026_cheaper_sparse_attention_indexers.ipynb) | Qwen Sparse Attention block indexer, DeepSeek-V4.1 CSA2 index reuse |
+| 66 | 2026 | [Causal encoder–decoder](notebooks/66_2026_causal_encoder_decoder.ipynb) | DeepSeek-V4.1-Flash: encoder-only prefill, decoder KV from the encoder's state |
+| 67 | 2026 | [Looped transformers](notebooks/67_2026_looped_transformers.ipynb) | recurrent depth: weights reused across passes, test-time loops |
+| 68 | 2026 | [Constant LR + checkpoint averaging](notebooks/68_2026_constant_lr_checkpoint_averaging.ipynb) | cosine vs. WSD vs. no decay with weight averaging (Kolibri-1) |
+| 69 | 2026 | [Late-2026 frontier capstone](notebooks/69_2026_late_2026_frontier_capstone.ipynb) | GDN-2 + block-indexed sparse attention + AttnRes + LatentMoE + MTP + Muon |
 
 Notebooks 01–08 use pure NumPy. From 09 onward they use PyTorch.
 
@@ -104,7 +114,7 @@ Each PyTorch notebook picks `cuda` → `mps` → `cpu` automatically. To force o
 NN_DEVICE=cpu jupyter lab notebooks/
 ```
 
-Run times on an Apple M1 Pro with MPS: most notebooks take seconds to a few minutes, and the longest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstone) take 5–10 minutes. CPU-only: most notebooks run at a similar speed, but these take 10–20 minutes: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58). Kimi Delta Attention (59) takes about 35 minutes on CPU (4 minutes on MPS). The DQN notebook (16) deliberately runs on CPU, which is faster for its tiny networks.
+Run times on an Apple M1 Pro with MPS: most notebooks take seconds to a few minutes, and the longest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstone) take 5–10 minutes. CPU-only: most notebooks run at a similar speed, but these take 10–20 minutes: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58). Kimi Delta Attention (59) takes about 35 minutes on CPU (4 minutes on MPS). The DQN notebook (16) deliberately runs on CPU, which is faster for its tiny networks. Notebooks 60 and 62–69 are committed **without saved outputs**: run them yourself (expect roughly 5–20 minutes each on an Apple-silicon GPU, faster on CUDA).
 
 ## Repository layout
 
@@ -123,4 +133,4 @@ To edit a notebook, either change the `.ipynb` directly, or edit `nb_src/<name>.
 ## Notes
 
 - These are **teaching-scale** implementations: tiny models, small data, short training runs. They show the mechanism, not state-of-the-art numbers. Where a toy result does not show the effect seen at scale, the notebook says so.
-- The 2026 notebooks follow the published designs: the DeepSeek-V4 technical report (arXiv 2606.19348), the mHC (arXiv 2512.24880) and Engram (arXiv 2601.07372) papers, DeepSeek-V3.2's sparse attention (arXiv 2512.02556), Qwen's gated attention (arXiv 2505.06708), the Qwen3.5 model card, and Kimi Linear (arXiv 2510.26692) with Sebastian Raschka's Kimi K3/K3.1 architecture notes. Where a detail was not specified, the notebook says which choice it made.
+- The 2026 notebooks follow the published designs: the DeepSeek-V4 technical report (arXiv 2606.19348), the mHC (arXiv 2512.24880) and Engram (arXiv 2601.07372) papers, DeepSeek-V3.2's sparse attention (arXiv 2512.02556), Qwen's gated attention (arXiv 2505.06708), the Qwen3.5 model card, and Kimi Linear (arXiv 2510.26692) with Sebastian Raschka's Kimi K3/K3.1 architecture notes. Notebooks 60–69 follow Mamba-3 (arXiv 2603.15569), Attention Residuals (arXiv 2603.15031), the Nemotron 3 Super/Ultra reports (arXiv 2604.12374, 2606.15007), Gated DeltaNet-2 (arXiv 2605.22791), the Qwen3.8-Next architecture report (arXiv 2608.30320), DeepSeek-V4.1-Flash (arXiv 2609.19969), and Raschka's notes on looped transformers (September 2026), the October 2026 open-model roundup and pre-training without LR decay (November 2026). Where a detail was not specified, the notebook says which choice it made.

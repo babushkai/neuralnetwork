@@ -1,7 +1,7 @@
 #%% md
 # 2026 — Kimi Delta Attention and the Kimi K3 Hybrid
 
-**Papers and models:** Moonshot AI, *"Kimi Linear: An Expressive, Efficient Attention Architecture"* (arXiv 2510.26692, Oct 2025); **Kimi K3** (weights released July 27, 2026) and **Kimi K3.1 Pro** (November 4, 2026). Per Sebastian Raschka's architecture notes, K3's 93-layer backbone is **69 Kimi Delta Attention (KDA) layers + 24 global attention layers**, with **no RoPE anywhere (NoPE)**. K3.1 Pro keeps all 69 KDA layers and swaps the 24 gated-MLA layers for gated DeepSeek Sparse Attention (notebook 54), where a learned indexer selects up to 2,048 positions per query.
+**Papers and models:** Moonshot AI, *"Kimi Linear: An Expressive, Efficient Attention Architecture"* (arXiv 2510.26692, Oct 2025); **Kimi K3** (weights released July 27, 2026) and **Kimi K3.1 Pro** (November 4, 2026). Per Sebastian Raschka's architecture notes, K3's 93-layer backbone is **69 Kimi Delta Attention (KDA) layers + 24 global attention layers**, with **no RoPE anywhere (NoPE)**. K3.1 Pro keeps all 69 KDA layers and makes the 24 global layers sparse with a DeepSeek-style lightning indexer (notebook 54) that selects the top 2,048 tokens per query. Sources disagree on the details: vLLM's day-0 post says the indexer is added to the existing MLA layers, while some model-card summaries describe them as replaced by gated DSA layers.
 
 **KDA** refines Gated DeltaNet (notebook 49). GDN forgets with one **scalar** rate per head; KDA gives **every channel its own forget rate**:
 
@@ -209,5 +209,5 @@ print(f"half-life across channels: min {half_life.min():.1f}, median {half_life.
 #%% md
 ## Where K3 fits
 - **K3 (July 2026):** 69 KDA + 24 gated-MLA layers, NoPE everywhere. KDA layers keep a fixed-size state, so most of the network has no growing KV cache.
-- **K3.1 Pro (November 2026):** same 69 KDA layers; the 24 global layers become gated **DeepSeek Sparse Attention**, so even the global layers read only ~2,048 selected positions per query (notebook 54). The design converges with DeepSeek-V4 (notebook 57) and Qwen3.5 (notebook 58): **mostly linear-memory layers, a few sparse global layers, a sparse MoE**.
+- **K3.1 Pro (November 2026):** same 69 KDA layers; the 24 global layers get a **DeepSeek Sparse Attention** indexer, so even the global layers read only ~2,048 selected positions per query (notebooks 54, 65). The model has 2.8T total parameters, 104B active, and a 1M-token context. The design converges with DeepSeek-V4 (notebook 57) and Qwen3.5 (notebook 58): **mostly linear-memory layers, a few sparse global layers, a sparse MoE**.
 - Caveats: the K3/K3.1 layer counts and NoPE choice come from Raschka's architecture notes, not a primary technical report; the exact $\alpha_t$ parameterisation is ours (Mamba/GDN style, as the paper describes). Toy tasks show the mechanisms, not the paper's scale results.

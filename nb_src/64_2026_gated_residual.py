@@ -1,0 +1,141 @@
+#%% md
+# 2026 — Gated Residual (Qwen3.8-Next)
+
+**Sources:** Qwen Team, *"On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability"* (arXiv 2608.30320, August 2026) and the **Qwen3.8-Flash-Next** model card (125B total / 6B active, released as a preview of the Qwen 4 architecture). Its layout: 12 × (3 × (Gated DeltaNet → MoE) → 1 × (Qwen Sparse Attention → MoE)), a 51B-parameter N-gram embedding (Engram-like, notebook 56), and a new residual path, the **Gated Residual (GR)**.
+
+2026 brought three rivals to the plain residual stream: **mHC** (DeepSeek-V4, notebook 55: several streams mixed by doubly stochastic matrices), **Attention Residuals** (Kimi, notebook 61: softmax over earlier layers), and Qwen's **Gated Residual**, a simplification of hyper-connections that folds in **GatedNorm**. With $n_r=4$ residual branches $R_i\in\mathbb R^d$:
+
+$$\hat R_i = \operatorname{RMSNorm}(R_i;\gamma_i)$$
+$$\text{read:}\quad G = \sigma\!\Big(W_u\,\operatorname{SiLU}\big(\tfrac1{n_r}W_d\operatorname{vec}(\hat R)\big)\Big)\in\mathbb R^{n_r\times d},\qquad x = \tfrac1{n_r}\textstyle\sum_i G_i\odot\hat R_i$$
+$$\text{layer:}\quad y = \mathcal F(x)\quad(\text{no separate pre-norm; the read already normalizes})$$
+$$\text{write:}\quad s = 2\sigma\!\big(\tfrac1{n_r}W_w\operatorname{vec}(\hat R)\big)\in\mathbb R^{n_r},\qquad R_i' = R_i + s_i\,y$$
+
+- The **read** gate is element-wise and data-dependent (per branch, per channel), through a low-rank bottleneck $r=d/8$ (320 in the 2560-wide model).
+- The **write** gate is just one scalar per branch.
+- Compared with mHC, GR drops the stream-mixing matrix $H^{res}$ ("adds little"), and needs no Sinkhorn.
+- The paper reports: GR ≥ dynamic mHC > static mHC > PreNorm in a 25B-A3B ablation (avg benchmark 54.66 / 54.47 / 52.49 / 50.91); GR reaches the same loss as Full AttnRes; and the gate removes loss spikes at high learning rates. Their production run had **no loss spikes**, with no QK-clip or SwiGLU-clip.
+
+*The GR equations above come from a summary of the technical report, not its verbatim text; the bottleneck rank, branch count and gate placement match the model card.*
+#%%
+{{SETUP}}
+#%%
+{{PROCEDURAL}}
+#%%
+class RMSNorm(nn.Module):
+    def __init__(self, d, eps=1e-6, affine=True): super().__init__(); self.w = nn.Parameter(torch.ones(d)) if affine else None; self.eps = eps
+    def forward(self, x):
+        y = x * torch.rsqrt(x.pow(2).mean(-1, keepdim=True) + self.eps)
+        return y * self.w if self.w is not None else y
+
+class Attn(nn.Module):
+    def __init__(self, d, heads=4):
+        super().__init__(); self.qkv, self.o, self.h = nn.Linear(d, 3 * d, bias=False), nn.Linear(d, d, bias=False), heads
+    def forward(self, x):
+        B, T, D = x.shape
+        q, k, v = self.qkv(x).view(B, T, 3, self.h, D // self.h).permute(2, 0, 3, 1, 4)
+        return self.o(F.scaled_dot_product_attention(q, k, v, is_causal=True).transpose(1, 2).reshape(B, T, D))
+
+class MLP(nn.Module):
+    def __init__(self, d): super().__init__(); self.f = nn.Sequential(nn.Linear(d, 4 * d, bias=False), nn.GELU(), nn.Linear(4 * d, d, bias=False))
+    def forward(self, x): return self.f(x)
+
+class GatedResidual(nn.Module):
+    """Wraps a sub-layer F. gated=False is the ablation: same widened, normalized streams, uniform read and write."""
+    def __init__(self, F_layer, d, n=4, gated=True):
+        super().__init__()
+        self.F, self.n, self.gated = F_layer, n, gated
+        self.gamma = nn.Parameter(torch.ones(n, d))                                   # per-branch RMSNorm gains
+        if gated:
+            r = max(d // 8, 4)
+            self.Wd, self.Wu = nn.Linear(n * d, r, bias=False), nn.Linear(r, n * d, bias=False)
+            self.Ww = nn.Linear(n * d, n, bias=False)
+        self.last = None
+    def forward(self, R):                                                             # R: (B, T, n, d)
+        B, T, n, d = R.shape
+        Rh = R * torch.rsqrt(R.pow(2).mean(-1, keepdim=True) + 1e-6) * self.gamma
+        if self.gated:
+            flat = Rh.reshape(B, T, n * d)
+            G = torch.sigmoid(self.Wu(F.silu(self.Wd(flat) / n))).view(B, T, n, d)   # element-wise read gate
+            s = 2 * torch.sigmoid(self.Ww(flat) / n)                                   # per-branch write scalar
+        else:
+            G = torch.ones_like(Rh); s = R.new_ones(B, T, n)
+        x = (G * Rh).mean(2)
+        y = self.F(x)
+        self.last = (G.detach().mean().item(), s.detach().mean(0).mean(0).cpu())
+        return R + s.unsqueeze(-1) * y.unsqueeze(2)
+
+class PreNorm(nn.Module):
+    def __init__(self, F_layer, d): super().__init__(); self.F, self.norm = F_layer, RMSNorm(d)
+    def forward(self, x): return x + self.F(self.norm(x))
+
+class LM(nn.Module):
+    def __init__(self, mode, d=64, n_layers=8, n=4, ctx=128):
+        super().__init__()
+        self.mode, self.n = mode, n
+        self.tok, self.pos = nn.Embedding(V, d), nn.Embedding(ctx, d)
+        subs = [f(d) for _ in range(n_layers) for f in (Attn, MLP)]
+        if mode == "prenorm": self.layers = nn.ModuleList([PreNorm(s, d) for s in subs])
+        else: self.layers = nn.ModuleList([GatedResidual(s, d, n, gated=(mode == "gated")) for s in subs])
+        self.ln, self.head = RMSNorm(d), nn.Linear(d, V, bias=False)
+    def forward(self, idx):
+        x = self.tok(idx) + self.pos(torch.arange(idx.shape[1], device=idx.device))
+        if self.mode == "prenorm":
+            for l in self.layers: x = l(x)
+            return self.head(self.ln(x))
+        R = x.unsqueeze(2).repeat(1, 1, self.n, 1)
+        for l in self.layers: R = l(R)
+        return self.head(self.ln(R.mean(2)))
+#%% md
+## Stability test: normal and 5× learning rate
+The Qwen report's stability evidence: at 4× the optimal LR, a plain model had 183 loss spikes per 10k steps; adding the GatedNorm gate cut spikes about 10×. We train PreNorm, an un-gated 4-branch stream (ablation) and GR at a normal LR and at 5× that LR, and count **spikes** (steps whose loss exceeds 1.3× the median of the previous 50 steps) and the largest pre-clipping gradient norm.
+#%%
+def get_batch(src, B=32):
+    ix = torch.randint(0, len(src) - 129, (B,), device=device)
+    return torch.stack([src[i:i + 128] for i in ix]), torch.stack([src[i + 1:i + 129] for i in ix])
+
+def train(mode, lr, steps=700):
+    seed_everything(0); m = LM(mode).to(device)
+    opt = torch.optim.AdamW(m.parameters(), lr=lr, weight_decay=0.1, betas=(0.9, 0.95))
+    sched = torch.optim.lr_scheduler.OneCycleLR(opt, lr, total_steps=steps, pct_start=0.05); losses, gn = [], []
+    for s in range(steps):
+        x, y = get_batch(train_data); loss = F.cross_entropy(m(x).reshape(-1, V), y.reshape(-1))
+        opt.zero_grad(); loss.backward(); gn.append(torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0).item()); opt.step(); sched.step()
+        losses.append(loss.item() if math.isfinite(loss.item()) else 10.0)
+    spikes = sum(losses[i] > 1.3 * np.median(losses[i - 50:i]) for i in range(100, steps))
+    m.eval(); g = torch.Generator(device="cpu").manual_seed(1); vals = []
+    with torch.no_grad():
+        for _ in range(20):
+            ix = torch.randint(0, len(val_data) - 129, (32,), generator=g).to(device)
+            x = torch.stack([val_data[i:i + 128] for i in ix]); y = torch.stack([val_data[i + 1:i + 129] for i in ix])
+            vals.append(F.cross_entropy(m(x).reshape(-1, V), y.reshape(-1)).item())
+    return m, losses, gn, spikes, float(np.mean(vals))
+
+runs = {}
+for lr in (3e-3, 1.5e-2):
+    for mode in ("prenorm", "ungated", "gated"):
+        t0 = time.time(); runs[(mode, lr)] = train(mode, lr)
+        _, _, gn, sp, vl = runs[(mode, lr)]
+        print(f"lr {lr:.0e} | {mode:8s} val loss {vl:.4f} | spikes {sp:3d} | max grad norm {max(gn[50:]):6.2f} | {time.time() - t0:.0f}s")
+fig, axes = plt.subplots(1, 2, figsize=(13, 4))
+for ax, lr in zip(axes, (3e-3, 1.5e-2)):
+    for mode in ("prenorm", "ungated", "gated"):
+        ax.plot(runs[(mode, lr)][1], label=mode, alpha=0.8, lw=0.8)
+    ax.set(title=f"lr = {lr:g}", xlabel="step", ylabel="training loss", ylim=(0.8, 3.5)); ax.legend()
+plt.tight_layout(); plt.show()
+#%% md
+## What the gates learned
+Average read-gate value and per-branch write scalars $s_i$ in each sub-layer of the trained GR model (normal LR). Uniform would be read 0.5 everywhere and $s_i=1$. Branches that receive different write strengths end up specialised.
+#%%
+m = runs[("gated", 3e-3)][0]
+with torch.no_grad(): m(get_batch(val_data, 8)[0])
+reads = [l.last[0] for l in m.layers]; writes = torch.stack([l.last[1] for l in m.layers]).numpy()
+fig, axes = plt.subplots(1, 2, figsize=(12, 3.5))
+axes[0].plot(reads, "o-"); axes[0].set(xlabel="sub-layer", ylabel="mean read gate", title="Read gate (element-wise, averaged)")
+im = axes[1].imshow(writes.T, aspect="auto", cmap="coolwarm", vmin=0, vmax=2); plt.colorbar(im, ax=axes[1])
+axes[1].set(xlabel="sub-layer", ylabel="branch", title="Write scalars s_i (2σ, 1 = neutral)"); plt.tight_layout(); plt.show()
+#%% md
+## Takeaways
+- GR keeps hyper-connections' widened residual (4 branches) but replaces the mixing machinery with two cheap gates: an **element-wise read** gate and a **per-branch scalar write**. It needs no Sinkhorn and no $n\times n$ stream mixing.
+- The normalization in the read path doubles as the layer's pre-norm, and the sigmoid gate bounds how much any branch can contribute. That bounded gate is where Qwen located the stability gain.
+- At toy scale and a few hundred steps, judge the spike counts and gradient norms above, not small loss differences. The paper's stability results came from a 28-layer MoE at 4× the optimal LR over 10k+ steps.
+- Same question, three 2026 answers: **mHC** (DeepSeek), **AttnRes** (Kimi), **GR** (Qwen). Qwen's ablations put GR level with dynamic mHC and Full AttnRes.
