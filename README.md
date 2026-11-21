@@ -104,7 +104,7 @@ Each PyTorch notebook picks `cuda` → `mps` → `cpu` automatically. To force o
 NN_DEVICE=cpu jupyter lab notebooks/
 ```
 
-Run times on an Apple M1 Pro with MPS: most notebooks take seconds to a few minutes, and the longest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstone) take 5–10 minutes. CPU-only: most notebooks run at a similar speed, but these take 10–20 minutes: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58). The DQN notebook (16) deliberately runs on CPU, which is faster for its tiny networks.
+Run times on an Apple M1 Pro with MPS: most notebooks take seconds to a few minutes, and the longest (Mamba, Gated DeltaNet, the 2026 attention notebooks, the capstone) take 5–10 minutes. CPU-only: most notebooks run at a similar speed, but these take 10–20 minutes: Mamba (39), WaveNet (25), mHC (55), DeepSeek-V4 attention (57) and the capstone (58). Kimi Delta Attention (59) takes about 35 minutes on CPU (4 minutes on MPS). The DQN notebook (16) deliberately runs on CPU, which is faster for its tiny networks.
 
 ## Repository layout
 
