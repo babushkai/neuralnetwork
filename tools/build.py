@@ -1,6 +1,6 @@
 """Convert nb_src/*.py (cell-marker format) into notebooks/*.ipynb.
 Markers: '#%% md' starts a markdown cell, '#%%' starts a code cell.
-Tokens {{SETUP}}, {{DIGITS}}, {{CORPUS}} are expanded from snippets/."""
+Tokens like {{SETUP}} are expanded from snippets/. Outputs of unchanged code cells are preserved."""
 import sys, pathlib, nbformat
 HERE = pathlib.Path(__file__).parent
 SRC = HERE.parent / "nb_src"
@@ -23,10 +23,16 @@ def convert(path):
         else:
             buf.append(line)
     flush()
-    nb = nbformat.v4.new_notebook(cells=cells)
-    nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
-    nb.metadata["language_info"] = {"name": "python"}
-    nbformat.write(nb, OUT / (path.stem + ".ipynb"))
+    out = OUT / (path.stem + ".ipynb")
+    meta = {"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"}, "language_info": {"name": "python"}}
+    if out.exists():                                     # reuse unchanged cells as-is (keeps outputs, ids, metadata)
+        old = nbformat.read(out, as_version=4)
+        prev = {}
+        for c in old.cells: prev.setdefault((c.cell_type, c.source), c)
+        cells = [prev.get((c.cell_type, c.source), c) for c in cells]
+        meta = {**meta, **old.metadata}
+    nb = nbformat.v4.new_notebook(cells=cells, metadata=meta)
+    nbformat.write(nb, out)
 
 OUT.mkdir(parents=True, exist_ok=True)
 targets = sys.argv[1:] or [p.stem for p in sorted(SRC.glob("*.py"))]
