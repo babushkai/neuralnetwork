@@ -10,6 +10,8 @@ $$x^{(l+1)}_j = \sum_i \phi^{(l)}_{j,i}\big(x^{(l)}_i\big), \qquad \phi(x) = w_b
 The motivation is the **Kolmogorov–Arnold representation theorem**: any continuous multivariate function is a sum of compositions of univariate functions. KANs can be very parameter-efficient on smooth "scientific" functions, and the learned edge functions can be plotted and even matched to symbolic formulas. Whether they beat MLPs in general is still debated. They are slower, and on standard ML tasks often no better.
 
 Below: a B-spline KAN from scratch, fitted to $f(x,y) = \exp(\sin(\pi x) + y^2)$ from the paper, and compared to an MLP.
+#%% md
+![Diagram: Kolmogorov–Arnold network (Liu et al., 2024)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/66_2024_kan.png)
 #%%
 {{SETUP}}
 #%%

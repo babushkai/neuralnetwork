@@ -8,6 +8,8 @@
 $$\mathcal L = -\log\sigma(u_w^\top v_c) - \sum_{k=1}^{K} \log\sigma(-u_w^\top v_{n_k}), \qquad n_k \sim P_{\text{noise}}(w) \propto \text{count}(w)^{3/4}$$
 
 To keep this offline and fast we build a **synthetic corpus** from a small grammar: words of the same kind (animals, foods, royals, …) appear in similar contexts, which is the statistical structure word2vec exploits.
+#%% md
+![Diagram: word2vec: skip-gram with negative sampling (Mikolov et al., 2013)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/18_2013_word2vec.png)
 #%%
 {{SETUP}}
 from collections import Counter

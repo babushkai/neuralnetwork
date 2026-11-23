@@ -14,6 +14,8 @@ peppermint => ?
 Few-shot ability grew sharply with model size, and it changed how models are used: instead of fine-tuning a model per task, you write a prompt. It also raised a scientific question: what algorithm is a frozen network running inside its forward pass?
 
 Language is too messy to answer that cleanly, so we use Garg et al.'s controlled version. Every training sequence is a **new, random linear function** $y = w^\top x$, $w\sim\mathcal N(0, I_d)$, presented as $(x_1, y_1, x_2, y_2, \dots)$. No single $w$ can be memorised. To predict $y_k$, the model must infer $w$ from the earlier pairs **in its context**. We can then compare it with the algorithms we know: least squares, nearest neighbours, and averaging.
+#%% md
+![Diagram: GPT-3 and in-context learning (Brown et al., 2020)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/46_2020_gpt3_in_context_learning.png)
 #%%
 {{SETUP}}
 #%%

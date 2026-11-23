@@ -18,6 +18,8 @@ A **lightning indexer**, $I_{t,s} = \sum_h w_{t,h}\,\operatorname{ReLU}(q^I_{t,h
 **Attention sink.** A learnable per-head logit $z'_h$ in the softmax denominator, $s_{h,i,j} = e^{z_{h,i,j}} / (\sum_k e^{z_{h,i,k}} + e^{z'_h})$, lets a head attend to "nothing".
 
 We implement all of this at toy scale ($m=4$, $m'=16$, window 16), compare global-layer types on long-context recall, and account for the KV cache.
+#%% md
+![Diagram: DeepSeek-V4: compressed sparse attention (CSA) and heavily compressed attention (HCA)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/78_2026_compressed_sparse_attention.png)
 #%%
 {{SETUP}}
 #%%

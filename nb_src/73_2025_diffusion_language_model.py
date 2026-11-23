@@ -11,6 +11,8 @@ $$\mathcal L = \mathbb E_{t, x_0}\Big[\frac1t \sum_{i:\,x_t^i=\text{[M]}} -\log 
 - **sampling:** start from an all-`[MASK]` sequence and, over $K$ steps, unmask the tokens the model is most confident about (LLaDA's *low-confidence remasking*)
 
 Parallel decoding can be much faster, and the model sees **both directions**, so it can **infill**: fill a gap given text on both sides, which a left-to-right model cannot do directly.
+#%% md
+![Diagram: Masked diffusion language model (LLaDA, Nie et al., 2025)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/73_2025_diffusion_language_model.png)
 #%%
 {{SETUP}}
 #%%

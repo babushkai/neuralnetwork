@@ -14,6 +14,8 @@ $$\mathcal L_{\text{bal}} = E\sum_{i=1}^{E} f_i\,P_i$$
 ($f_i$ = fraction of tokens sent to expert $i$, $P_i$ = mean router probability for $i$) is minimised by a uniform split. (DeepSeek-V3 instead uses a bias-based, loss-free balancing method.)
 
 To make routing easy to see, we use an MoE classifier on digits. In an LLM, every *token* is routed this way inside each Transformer block.
+#%% md
+![Diagram: Mixture of experts (Shazeer et al., 2017; Switch, 2021; DeepSeek-V3, 2024)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/64_2023_mixture_of_experts.png)
 #%%
 {{SETUP}}
 #%%

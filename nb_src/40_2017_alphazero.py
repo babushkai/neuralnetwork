@@ -14,6 +14,8 @@ In March 2016 AlphaGo beat Lee Sedol 4–1 at Go, a decade earlier than most exp
 $$\mathcal L = (z - v)^2 - \pi^\top\log p + c\lVert\theta\rVert^2$$
 
 The same algorithm, unchanged, mastered chess, shogi and Go. Here it learns tic-tac-toe from scratch, a game small enough that we can compute **perfect play** and check exactly how good the learned policy is.
+#%% md
+![Diagram: AlphaGo Zero / AlphaZero (Silver et al., 2017)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/40_2017_alphazero.png)
 #%%
 {{SETUP}}
 device = torch.device("cpu")

@@ -10,6 +10,8 @@ A plain autoencoder's code space has holes, so decoding a random code gives garb
 - the **reparameterisation trick** $z = \mu + \sigma \odot \epsilon,\ \epsilon\sim\mathcal N(0,I)$ lets gradients flow through sampling.
 
 Then you can **generate** new data by decoding $z \sim \mathcal N(0, I)$.
+#%% md
+![Diagram: Variational autoencoder (Kingma & Welling, 2013)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/19_2013_vae.png)
 #%%
 {{SETUP}}
 #%%

@@ -16,6 +16,8 @@ All three are **dynamic**, computed from the current input: $\tilde H = \alpha\,
 **The problem:** unconstrained $H^{res}$ matrices multiply across layers. In a 27B model the composite signal gain of HC reached about **3000**, with loss spikes and gradient explosions.
 
 **mHC's fix:** constrain $H^{res}$ to the **Birkhoff polytope**, the doubly stochastic matrices (non-negative, every row and column sums to 1), using 20 **Sinkhorn–Knopp** iterations on $\exp(\tilde H^{res})$. Products of doubly stochastic matrices stay doubly stochastic, so the composite gain stays near 1 (the paper measured at most about 1.6). Also $H^{pre} = \sigma(\cdot)$ and $H^{post} = 2\sigma(\cdot)$. Result: stable training, and at 27B it beat both the baseline and HC on 7 of 8 benchmarks for about 6.7% extra time.
+#%% md
+![Diagram: mHC: manifold-constrained hyper-connections (DeepSeek, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/76_2026_manifold_constrained_hyper_connections.png)
 #%%
 {{SETUP}}
 #%%

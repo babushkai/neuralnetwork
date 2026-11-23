@@ -15,6 +15,8 @@ Components (all built from scratch below):
 - **Encoder–decoder** with cross-attention
 
 Task: **reverse and increment** a digit sequence (`3 1 4` → `5 2 4`, each digit +1 mod 10, order reversed). It needs content-based lookups at positions far apart, which is easy for attention.
+#%% md
+![Diagram: Transformer (Vaswani et al., 2017)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/37_2017_transformer.png)
 #%%
 {{SETUP}}
 #%%

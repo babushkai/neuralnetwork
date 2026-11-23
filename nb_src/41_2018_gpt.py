@@ -13,6 +13,8 @@ That simple objective, scaled up, is the basis of today's large language models.
 - **Weight tying** between the input embedding and the output layer
 
 A tiny character-level GPT trained on a ~2 KB corpus. It will mostly memorise; the point is the mechanics.
+#%% md
+![Diagram: GPT (Radford et al., 2018): decoder-only Transformer](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/41_2018_gpt.png)
 #%%
 {{SETUP}}
 #%%

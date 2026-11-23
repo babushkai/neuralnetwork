@@ -14,6 +14,8 @@ What it does and doesn't buy (Raschka, *OpenAI Astra and Looped Transformers*, S
 - **Upside:** the same weights can be run for **more passes at test time**, a form of inference-time scaling, and iterative algorithms fit the structure naturally.
 
 **This notebook:** multi-hop pointer chasing, a task whose difficulty grows with the number of sequential steps. We compare a shallow model, a deep model and a looped model, then add loops at test time.
+#%% md
+![Diagram: Looped transformer (Universal Transformer, 2018 → 2026 models)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/88_2026_looped_transformers.png)
 #%%
 {{SETUP}}
 #%% md

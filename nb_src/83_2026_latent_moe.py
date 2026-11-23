@@ -1,7 +1,7 @@
 #%% md
 # 2026 — LatentMoE: Experts in a Compressed Space
 
-**Sources:** NVIDIA, *"Nemotron 3 Super: Open, Efficient Mixture-of-Experts Hybrid Mamba-Transformer Model for Agentic Reasoning"* (arXiv 2604.12374, 2026) and *Nemotron 3 Ultra* (arXiv 2606.15007, June 2026); Sebastian Raschka's *Nemotron 3 Ultra Latent MoE note* (June 2026). In October 2026, Meta's **Muse Spark Open** (816B) and **Nemotron 3.5 Super VL** also shipped LatentMoE layers.
+**Sources:** NVIDIA, *"Nemotron 3 Super: Open, Efficient Mixture-of-Experts Hybrid Mamba-Transformer Model for Agentic Reasoning"* (arXiv 2604.12374, 2026) and *Nemotron 3 Ultra* (arXiv 2606.15007, June 2026); Sebastian Raschka's *Nemotron 3 Ultra Latent MoE note* (June 2026). Secondary reports from October 2026 say Meta's **Muse Spark Open** (816B) and **Nemotron 3.5 Super VL** also use LatentMoE layers; we have not checked those against primary sources.
 
 Notebook 64 built a mixture of experts (MoE): a router sends each token to $K$ of $N$ expert MLPs. Since DeepSeek-V3, the trend has been **fine-grained** experts: more, smaller experts and a larger $K$, because more combinations of experts improves quality. That costs **communication**: in expert-parallel training and serving, each token's $d$-dimensional hidden state is sent to $K$ devices, so the all-to-all payload grows as $K\cdot d$.
 
@@ -14,6 +14,8 @@ Notebook 64 built a mixture of experts (MoE): a router sends each token to $K$ o
 Nemotron 3 Super: $d=4096 \to \ell=1024$, 512 experts, top-22. Ultra: $d=8192\to\ell=2048$, 512 experts, top-22, 550B total / 55B active.
 
 **Bookkeeping, and an honest caveat (also Raschka's).** With $N'=4N$, $K'=4K$ and experts of the same hidden width $m$, the expert parameters ($N'\ell m = Ndm$), the per-token FLOPs ($K'\ell m = Kdm$) and the all-to-all payload ($K'\ell = Kd$) all **equal** the original coarse MoE. So the 4× bottleneck is not a 4× speedup. The gain is quality: $\binom{N'}{K'}$ expert combinations instead of $\binom{N}{K}$, at the coarse MoE's cost. The fair comparison is a **fine-grained** MoE with the same combinations and parameters, which pays $K'd$, i.e. 4× more communication.
+#%% md
+![Diagram: LatentMoE (NVIDIA Nemotron 3, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/83_2026_latent_moe.png)
 #%%
 {{SETUP}}
 #%%
@@ -150,6 +152,6 @@ print(f"load: min {load.min():.3f}, max {load.max():.3f} (uniform {1 / 32:.3f})"
 #%% md
 ## Takeaways
 - LatentMoE puts experts in a compressed space ($d/\ell = 4$ in Nemotron 3) and spends the saving on **4× more experts and 4× larger top-K**, getting fine-grained routing at coarse-MoE communication and parameter cost.
-- The bookkeeping matters: total expert parameters, active FLOPs and all-to-all payload all match the coarse MoE. It is **not** a 4× speedup; it buys the combinatorial richness of a fine-grained MoE without the fine-grained MoE's 4× communication.
+- The bookkeeping matters: total expert parameters and all-to-all payload match the coarse MoE exactly, and active FLOPs match up to the shared down/up projections (+8% in the table above). It is **not** a 4× speedup; it buys the combinatorial richness of a fine-grained MoE without the fine-grained MoE's 4× communication.
 - At this toy scale (one GPU, so no all-to-all), compare the losses only within the noise of one seed; whether LatentMoE beats fine-grained MoE on quality is not something a 4-layer character model can settle. The cost table above is the part that holds at any scale.
 - Assumptions: router on full $d$ (the report's text; its Figure 3 caption suggests otherwise), softmax top-K routing with a standard balance loss (production uses sigmoid scores with bias-based balancing, notebook 64), and a shared expert added after $W_\uparrow$.

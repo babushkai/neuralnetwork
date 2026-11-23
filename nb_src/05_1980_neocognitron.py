@@ -11,6 +11,8 @@ The neocognitron is the direct ancestor of the convolutional network. Nine years
 Alternating S and C layers builds features that become both more complex and more shift-tolerant at each stage. What the neocognitron did **not** have was backpropagation: its S-cells were trained **without labels**, by competitive "winner-take-all" self-organization. Each input patch reinforces only the template that already matches it best.
 
 This notebook builds a two-stage neocognitron-style network, trains its S-layers by competitive learning, and tests the claim in the paper's title: recognition "unaffected by shift in position".
+#%% md
+![Diagram: Neocognitron (Fukushima, 1980)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/05_1980_neocognitron.png)
 #%%
 {{SETUP}}
 #%%

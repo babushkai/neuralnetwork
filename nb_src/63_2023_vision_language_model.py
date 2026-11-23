@@ -10,6 +10,8 @@ How do you give a language model eyes? LLaVA's recipe is simple:
 4. **stage 2:** unfreeze the LLM and train on image + instruction → answer data (visual instruction tuning)
 
 Our toy version: images with **two handwritten digits side by side**. A small word-level language model learns to answer questions such as *"what is the left digit?"*, *"what is the sum?"* and *"is the left digit bigger?"*
+#%% md
+![Diagram: Vision-language model, LLaVA-style (Liu et al., 2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/63_2023_vision_language_model.png)
 #%%
 {{SETUP}}
 #%%

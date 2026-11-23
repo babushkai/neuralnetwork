@@ -1,32 +1,19 @@
 # Neural Networks, 1943–2026
 
+[![check](https://github.com/babushkai/neuralnetwork/actions/workflows/check.yml/badge.svg)](https://github.com/babushkai/neuralnetwork/actions/workflows/check.yml)
+
 A runnable history of neural networks in 90 Jupyter notebooks, from the McCulloch–Pitts neuron to the architectures of late-2026 language models. Each notebook implements one milestone from scratch, runs a small experiment that tests the paper's central claim, and reports what the experiment shows, including when it does not reproduce at toy scale. Everything runs on a laptop.
 
 <p align="center"><img src="assets/hero.png" width="860" alt="Plots produced by the notebooks: Hopfield recall, an echo state network predicting a chaotic series, a Neural Turing Machine's memory accesses, ResNet gradient flow, YOLO detections, in-context learning compared with least squares, latent diffusion samples with classifier-free guidance, and attention over depth."></p>
 
 ## Contents
 
-- [How the notebooks are written](#how-the-notebooks-are-written)
 - [The notebooks](#the-notebooks): [1943–1997](#foundations-19431997) · [2001–2016](#the-deep-learning-revival-20012016) · [2017–2022](#transformers-and-scale-20172022) · [2023–2025](#the-llm-era-20232025) · [2026](#2026)
+- [How the notebooks are written](#how-the-notebooks-are-written)
 - [Reading paths](#reading-paths)
 - [Running the notebooks](#running-the-notebooks)
 - [Repository layout](#repository-layout)
 - [Sources and accuracy](#sources-and-accuracy)
-
-## How the notebooks are written
-
-Every notebook follows the same structure:
-
-1. **The paper and the problem it solved.** Primary citations first, then the idea in a few equations.
-2. **A from-scratch implementation.** NumPy for the early notebooks and plain PyTorch afterwards. No pretrained weights, model hubs, or library layers that hide the mechanism being taught.
-3. **One experiment that isolates the claim.** For example: plain vs. residual networks at increasing depth; a reward model that is optimised with and without a KL penalty; a delta-rule memory against plain linear attention on associative recall.
-4. **Takeaways and limits.** What the result shows, what it does not, and what the full-scale system did differently.
-
-Conventions:
-
-- **No downloads.** Data is scikit-learn's bundled 8×8 digits, synthetic tasks, or text generated inside the notebook. The notebooks run offline.
-- **Standalone.** Each notebook runs top to bottom on its own. Shared code (device selection, data, a small GPT) is inlined at build time, not imported.
-- **Toy scale, stated as such.** Models have thousands to a few million parameters and train for seconds to minutes. They demonstrate mechanisms, not benchmark numbers. Where a small model cannot show an effect reported at scale, the notebook says so.
 
 ## The notebooks
 
@@ -151,6 +138,22 @@ These notebooks follow designs published in 2026. Several are new enough that in
 
 No single notebook is "the state of the art". The open frontier of late 2026 is a combination: mostly linear-memory layers, a few sparse global-attention layers, learned residual mixing, and very sparse mixtures of experts (notebook 90). Closed labs do not publish their architectures, so only open designs are covered.
 
+## How the notebooks are written
+
+Every notebook follows the same structure:
+
+1. **The paper and the problem it solved.** Primary citations first, then the idea in a few equations.
+2. **A diagram of the design**, drawn to match the notebook's own implementation (layer sizes, gates, where the loss attaches).
+3. **A from-scratch implementation.** NumPy for the early notebooks and plain PyTorch afterwards. No pretrained weights, model hubs, or library layers that hide the mechanism being taught.
+4. **One experiment that isolates the claim.** For example: plain vs. residual networks at increasing depth; a reward model that is optimised with and without a KL penalty; a delta-rule memory against plain linear attention on associative recall.
+5. **Takeaways and limits.** What the result shows, what it does not, and what the full-scale system did differently.
+
+Conventions:
+
+- **No downloads.** Data is scikit-learn's bundled 8×8 digits, synthetic tasks, or text generated inside the notebook. The notebooks run offline.
+- **Standalone.** Each notebook runs top to bottom on its own. Shared code (device selection, data, a small GPT) is inlined at build time, not imported.
+- **Toy scale, stated as such.** Models have thousands to a few million parameters and train for seconds to minutes. They demonstrate mechanisms, not benchmark numbers. Where a small model cannot show an effect reported at scale, the notebook says so.
+
 ## Reading paths
 
 The notebooks are numbered chronologically, but each one stands alone. Some routes through them:
@@ -176,21 +179,25 @@ Requirements: PyTorch 2.2+, NumPy, Matplotlib, scikit-learn (see `requirements.t
 
 **Run time.** On an Apple M1 Pro, most notebooks finish in under two minutes and the heaviest in 5–15 minutes. On CPU only, Mamba (59), WaveNet (32), mHC (76), compressed sparse attention (78) and the early-2026 capstone (79) take 10–20 minutes and Kimi Delta Attention (80) about 35; the other 2026 notebooks have not been timed on CPU.
 
-**Saved outputs.** Every notebook except 81 and 83–89 is committed with the outputs of a full run, so it reads like an article on GitHub. Those eight 2026 notebooks are the heaviest and have not been executed in this repository yet; run them locally or in Colab (roughly 5–20 minutes each on a recent GPU or Apple silicon). Reports of failures are welcome.
+**Saved outputs.** Every notebook except 84–89 is committed with the outputs of a full run, so it reads like an article on GitHub. Those six 2026 notebooks are the heaviest and have not been executed in this repository yet; run them locally or in Colab (roughly 5–20 minutes each on a recent GPU or Apple silicon). Reports of failures are welcome.
 
 ## Repository layout
 
 ```
 notebooks/    the 90 notebooks (.ipynb)
+assets/diagrams/  one architecture diagram per notebook (PNG), shown at the top of each notebook
 nb_src/       their sources, in a plain-text "#%% md" / "#%%" cell format that diffs cleanly
 tools/
   build.py         nb_src/<name>.py → notebooks/<name>.ipynb; expands shared snippets; keeps outputs of unchanged cells
   snippets/        shared code inlined at build time: device setup, digits loader, text corpora, a small GPT
   run_all.sh       rebuild and execute notebooks in place
+  check.py         consistency checks run in CI: sources match notebooks, code parses, outputs saved, README complete
+  make_figure.py   rebuild assets/hero.png from notebook outputs
+  diagrams.py      the 90 architecture diagrams, as data; draws assets/diagrams/ (renderer: diagram_engine.py)
   show_outputs.py  print the text outputs of executed notebooks
 ```
 
-To change a notebook, edit `nb_src/<name>.py`, run `python tools/build.py <name>`, then execute the notebook. Pull requests that fix errors, sharpen an experiment, or add a milestone with a public paper are welcome; please include the executed notebook.
+To change a notebook, edit `nb_src/<name>.py`, run `python tools/build.py <name>`, then execute the notebook. `python tools/check.py` verifies the result. CI also executes a fast subset of notebooks on CPU. Pull requests that fix errors, sharpen an experiment, or add a milestone with a public paper are welcome; please include the executed notebook.
 
 ## Sources and accuracy
 

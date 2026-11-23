@@ -16,6 +16,8 @@ The difficulty is building a flexible $f$ whose inverse and Jacobian determinant
 $$y_a = x_a, \qquad y_b = x_b \odot e^{s(x_a)} + t(x_a)$$
 
 The Jacobian is triangular, so $\log|\det| = \sum s(x_a)$. The inverse is $x_b = (y_b - t(y_a))\,e^{-s(y_a)}$. And $s, t$ can be any neural networks; they never need to be inverted. Stack layers, alternating which half is transformed.
+#%% md
+![Diagram: RealNVP affine coupling (Dinh, Sohl-Dickstein & Bengio, 2016)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/35_2016_normalizing_flows_realnvp.png)
 #%%
 {{SETUP}}
 from sklearn.datasets import make_moons

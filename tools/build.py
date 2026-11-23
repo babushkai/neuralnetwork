@@ -7,7 +7,8 @@ SRC = HERE.parent / "nb_src"
 OUT = HERE.parent / "notebooks"
 SNIP = {p.stem.upper(): p.read_text().rstrip() for p in (HERE / "snippets").glob("*.py")}
 
-def convert(path):
+def parse(path):
+    """The list of cells (markdown/code) that nb_src/<name>.py describes, with snippets expanded."""
     cells, kind, buf = [], None, []
     def flush():
         if kind is None: return
@@ -23,6 +24,10 @@ def convert(path):
         else:
             buf.append(line)
     flush()
+    return cells
+
+def convert(path):
+    cells = parse(path)
     out = OUT / (path.stem + ".ipynb")
     meta = {"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"}, "language_info": {"name": "python"}}
     if out.exists():                                     # reuse unchanged cells as-is (keeps outputs, ids, metadata)
@@ -34,7 +39,8 @@ def convert(path):
     nb = nbformat.v4.new_notebook(cells=cells, metadata=meta)
     nbformat.write(nb, out)
 
-OUT.mkdir(parents=True, exist_ok=True)
-targets = sys.argv[1:] or [p.stem for p in sorted(SRC.glob("*.py"))]
-for t in targets:
-    convert(SRC / f"{t}.py"); print("built", t)
+if __name__ == "__main__":
+    OUT.mkdir(parents=True, exist_ok=True)
+    targets = sys.argv[1:] or [p.stem for p in sorted(SRC.glob("*.py"))]
+    for t in targets:
+        convert(SRC / f"{t}.py"); print("built", t)

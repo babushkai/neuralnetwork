@@ -10,6 +10,8 @@ $$H^{(l+1)} = \sigma\!\left(\hat D^{-1/2}\hat A\hat D^{-1/2} H^{(l)} W^{(l)}\rig
 This is the simplest form of **message passing**. Stacking $k$ layers lets information travel $k$ hops.
 
 **Task:** semi-supervised node classification. We build a graph with 4 communities (a stochastic block model) and noisy node features, then reveal the labels of only **2 nodes per class**. Can the graph structure spread the labels?
+#%% md
+![Diagram: Graph convolutional network (Kipf & Welling, 2016)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/33_2016_graph_convolutional_network.png)
 #%%
 {{SETUP}}
 #%%

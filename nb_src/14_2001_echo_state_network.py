@@ -11,6 +11,8 @@ In 2001 training recurrent networks with backpropagation through time was slow a
 It works if the reservoir has the **echo state property**: its state must depend on the input history and forget its own initial condition. The practical knob is the **spectral radius** $\rho(W)$, the largest absolute eigenvalue. Near (just below) 1, the reservoir keeps a long fading memory of its input.
 
 The 2004 Science paper predicted the chaotic Mackey–Glass system orders of magnitude more accurately than earlier methods. We reproduce a small version of that.
+#%% md
+![Diagram: Echo state network (Jaeger, 2001)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/14_2001_echo_state_network.png)
 #%%
 {{SETUP}}
 #%%

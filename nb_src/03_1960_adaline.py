@@ -14,6 +14,8 @@ This **Least Mean Squares (LMS) / delta rule** is the first use of gradient desc
 | Update uses | thresholded output | linear output |
 | Updates when | only on mistakes | always (error is continuous) |
 | Non-separable data | never settles | converges to least-squares solution |
+#%% md
+![Diagram: ADALINE and the LMS rule (Widrow & Hoff, 1960)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/03_1960_adaline.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

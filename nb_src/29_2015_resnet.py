@@ -8,6 +8,8 @@
 **The fix:** let each block learn a *residual* and add a shortcut:
 $$y = x + \mathcal F(x)$$
 Identity is now the default (just set $\mathcal F = 0$), and gradients flow straight through the shortcuts: $\partial y/\partial x = I + \partial\mathcal F/\partial x$. Residual connections are in almost every modern architecture, including every Transformer.
+#%% md
+![Diagram: ResNet basic block (He et al., 2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/29_2015_resnet.png)
 #%%
 {{SETUP}}
 #%%

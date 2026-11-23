@@ -14,6 +14,8 @@ The paper tested about 30 variants on 15B MoE and 1.7B dense models. A head-spec
 - **Better long-context extrapolation** (RULER +10 points)
 
 We compare a baseline and a gated small LM: validation loss at a normal and a high learning rate, and how much attention goes to the first token.
+#%% md
+![Diagram: Gated attention (Qwen, 2025)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/71_2025_gated_attention.png)
 #%%
 {{SETUP}}
 #%%

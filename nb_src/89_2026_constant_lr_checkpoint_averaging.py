@@ -14,6 +14,8 @@ Schedules used by 2026 open models (from Raschka's note):
 **Why it works:** with a constant LR, SGD-type optimizers bounce around a valley floor with noise proportional to the LR. Decaying the LR shrinks the bouncing. **Averaging the iterates** cancels the bouncing directly, so you get most of the decay's benefit without lowering the LR and without fixing the run length in advance. Training can continue from the constant-LR weights at any time, so every checkpoint is "anytime".
 
 We train the same small GPT with each schedule and track validation loss throughout.
+#%% md
+![Diagram: Constant learning rate + checkpoint averaging (2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/89_2026_constant_lr_checkpoint_averaging.png)
 #%%
 {{SETUP}}
 #%%

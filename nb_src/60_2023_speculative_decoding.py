@@ -12,6 +12,8 @@ Generating with a big LLM is slow because it is **one token per forward pass**, 
 4. if all $\gamma$ are accepted, sample one bonus token from $p$
 
 This is **mathematically exact**: the output has precisely the target model's distribution, not an approximation. The speed-up depends on how often the draft agrees with the target.
+#%% md
+![Diagram: Speculative decoding (Leviathan et al.; Chen et al., 2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/60_2023_speculative_decoding.png)
 #%%
 {{SETUP}}
 #%%

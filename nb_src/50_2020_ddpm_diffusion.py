@@ -10,6 +10,8 @@ $$x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\epsilon, \qquad \epsi
 $$x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\Big(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\epsilon_\theta(x_t,t)\Big) + \sigma_t z$$
 
 Diffusion models replaced GANs for image, video and audio generation (DALL·E 2, Imagen, Stable Diffusion, Sora). We train a DDPM on 2-D data first (fast and easy to see), then on 8×8 digits.
+#%% md
+![Diagram: Denoising diffusion probabilistic models (Ho, Jain & Abbeel, 2020)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/50_2020_ddpm_diffusion.png)
 #%%
 {{SETUP}}
 from sklearn.datasets import make_swiss_roll

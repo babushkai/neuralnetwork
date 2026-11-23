@@ -14,6 +14,8 @@ $$m' = \max(m, \operatorname{rowmax}(S)),\quad \ell' = e^{m-m'}\ell + \operatorn
 Memory becomes $O(T)$ instead of $O(T^2)$, and it runs 2–4× faster. It's the reason long-context training is practical; every modern LLM stack (and PyTorch's `F.scaled_dot_product_attention`) uses it or a successor.
 
 We implement the tiled algorithm in plain PyTorch. It won't be faster than a fused kernel here, since that needs custom GPU code, but it shows the algorithm is exact and how the memory saving comes about.
+#%% md
+![Diagram: FlashAttention (Dao et al., 2022)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/54_2022_flash_attention.png)
 #%%
 {{SETUP}}
 #%%

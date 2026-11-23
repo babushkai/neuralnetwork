@@ -15,6 +15,8 @@ h_t &= o_t \odot \tanh(c_t)
 $$
 
 We (1) write the cell by hand and check it matches `nn.LSTM`, then (2) run the **adding problem** from the original paper, where a vanilla RNN fails and an LSTM succeeds.
+#%% md
+![Diagram: LSTM (Hochreiter & Schmidhuber, 1997)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/13_1997_lstm.png)
 #%%
 {{SETUP}}
 #%%

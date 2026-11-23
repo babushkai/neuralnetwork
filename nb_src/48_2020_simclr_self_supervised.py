@@ -10,6 +10,8 @@ Can a network learn good features **without any labels**? SimCLR's recipe:
 $$\ell_{i,j} = -\log \frac{\exp(\operatorname{sim}(z_i, z_j)/\tau)}{\sum_{k\neq i}\exp(\operatorname{sim}(z_i, z_k)/\tau)}$$
 
 The network has to learn what stays the same under augmentation, which turns out to be *what the object is*. Evaluate with a **linear probe**: freeze the encoder and train only a linear classifier on its features. CLIP (notebook 51) applies the same contrastive loss across images and text.
+#%% md
+![Diagram: SimCLR (Chen et al., 2020)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/48_2020_simclr_self_supervised.png)
 #%%
 {{SETUP}}
 #%%
