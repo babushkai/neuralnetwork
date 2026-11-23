@@ -12,6 +12,8 @@ $$
 **Seq2seq:** an *encoder* RNN reads the input sequence into a fixed vector, and a *decoder* RNN generates the output sequence from it. This was the first neural approach to work well for machine translation. It is trained with **teacher forcing** (the decoder is fed the true previous token) and decoded greedily.
 
 Task: **sort** a sequence of digits, e.g. `5 1 4 1` → `1 1 4 5`. Input and output lengths can differ in general, and seq2seq handles that naturally.
+#%% md
+![Diagram: GRU and sequence-to-sequence (Cho et al.; Sutskever et al., 2014)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/23_2014_gru_seq2seq.png)
 #%%
 {{SETUP}}
 #%%

@@ -13,6 +13,8 @@ $$\alpha_t = \sigma\!\Big(\frac{\operatorname{RMSNorm}(h_t)^\top \operatorname{R
 5. **Causal depthwise conv** (kernel 4, dilation = max N, zero-initialised), $Y = \operatorname{SiLU}(\operatorname{Conv}(\operatorname{RMSNorm}(\tilde V))) + \tilde V$; add $Y$ to the residual stream early in the network (DeepSeek: layers 2 and 15 of 30)
 
 The lookup depends only on token IDs, so the tables can live in **CPU memory** and be prefetched; a 100B-parameter table cost under 3% throughput. At 27B parameters, moving about 20–25% of the sparse parameter budget from MoE experts into Engram improved every benchmark (e.g. BBH +5.0, MMLU +3.0) and long-context retrieval (multi-query needle-in-a-haystack 84.2 → 97.0).
+#%% md
+![Diagram: Engram: conditional memory (DeepSeek, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/77_2026_engram_conditional_memory.png)
 #%%
 {{SETUP}}
 #%%

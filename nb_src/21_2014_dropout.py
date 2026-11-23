@@ -8,6 +8,8 @@ Large networks trained on small datasets memorize them. Dropout's fix: during tr
 - No unit can rely on a specific other unit being present, which prevents fragile **co-adaptations**.
 - Each step trains a different random sub-network; all $2^n$ of them share weights. At test time you want the **average** of this huge ensemble.
 - **Weight scaling** approximates that average cheaply: use the full network and scale activations by the keep probability $1-p$. Modern code uses *inverted dropout* instead: divide by $1-p$ during training, so the test-time network needs no change.
+#%% md
+![Diagram: Dropout (Hinton et al., 2012; Srivastava et al., 2014)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/21_2014_dropout.png)
 #%%
 {{SETUP}}
 #%%

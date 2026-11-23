@@ -9,14 +9,16 @@ This notebook assembles the pieces of a 2026 open-weight frontier LLM into one s
 
 | component | notebook | used here |
 |---|---|---|
-| Gated DeltaNet (linear memory, delta rule) | 49 | 3 of every 4 layers |
-| Gated attention + RoPE + QK-norm + GQA | 50, 53 | 1 of every 4 layers |
-| Fine-grained MoE + shared expert, aux-loss-free balancing | 44 | after every mixer |
-| Multi-token prediction | 47 | depth 1, weight 0.3 |
-| Muon for hidden matrices, AdamW for the rest | 53 | yes |
-| RMSNorm, pre-norm, SwiGLU experts | 53 | yes |
+| Gated DeltaNet (linear memory, delta rule) | 70 | 3 of every 4 layers |
+| Gated attention + RoPE + QK-norm + GQA | 71, 74 | 1 of every 4 layers |
+| Fine-grained MoE + shared expert, aux-loss-free balancing | 64 | after every mixer |
+| Multi-token prediction | 68 | depth 1, weight 0.3 |
+| Muon for hidden matrices, AdamW for the rest | 74 | yes |
+| RMSNorm, pre-norm, SwiGLU experts | 74 | yes |
 
 Not included, to keep it small: MLA/CSA/HCA (67, 78), mHC (76), Engram (77), and post-training (SFT, RL from notebooks 58 and 69).
+#%% md
+![Diagram: Early-2026 capstone: a Qwen3.5 / DeepSeek-V4-style hybrid](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/79_2026_frontier_model_capstone.png)
 #%%
 {{SETUP}}
 #%%

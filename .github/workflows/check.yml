@@ -1,0 +1,39 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  consistency:
+    name: Sources, notebooks and README are consistent
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install nbformat
+      - run: python tools/check.py
+
+  smoke:
+    name: Execute a fast subset on CPU
+    runs-on: ubuntu-latest
+    env:
+      NN_DEVICE: cpu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install numpy matplotlib scikit-learn scipy nbformat nbconvert ipykernel
+      - name: Execute notebooks (outputs are discarded)
+        run: |
+          mkdir -p /tmp/out
+          for nb in notebooks/0[1-9]_*.ipynb notebooks/14_*.ipynb notebooks/35_*.ipynb; do
+            echo "::group::$nb"
+            python -m nbconvert --to notebook --execute --output-dir /tmp/out --ExecutePreprocessor.timeout=900 "$nb"
+            echo "::endgroup::"
+          done

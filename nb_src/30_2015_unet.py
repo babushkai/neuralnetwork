@@ -11,6 +11,8 @@ Segmentation needs a label **for every pixel**. U-Net is an encoder–decoder:
 U-Net is still the standard in medical imaging, and it is the denoising backbone of most diffusion models (Stable Diffusion's UNet).
 
 We generate a synthetic dataset: noisy images with random circles, squares and triangles, and the task is to label each pixel as background / circle / square / triangle.
+#%% md
+![Diagram: U-Net (Ronneberger, Fischer & Brox, 2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/30_2015_unet.png)
 #%%
 {{SETUP}}
 #%%

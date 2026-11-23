@@ -15,6 +15,8 @@ Key points:
 - *Networks* of units can compute any Boolean function (including XOR), which made the brain look like a logic machine.
 
 No GPU needed — pure NumPy.
+#%% md
+![Diagram: McCulloch–Pitts neuron (1943)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/01_1943_mcculloch_pitts_neuron.png)
 #%%
 import numpy as np
 import itertools

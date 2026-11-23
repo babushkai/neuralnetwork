@@ -16,6 +16,8 @@ Also: RMSNorm on $B$ and $C$ ("BCNorm", like QK-norm) plus learnable channel-wis
 **Paper results (100B tokens):** at 1.5B, perplexity 10.47 (Mamba-2) → 10.35 (Mamba-3 SISO) → 10.24 (MIMO, R=4); average accuracy +0.6 points over Gated DeltaNet for SISO and +1.8 for MIMO. On parity, Mamba-3 scores 100% and Mamba-2 0.9% (scaled accuracy, where 0 = chance).
 
 **Our choices where the text we read is not explicit:** how $\theta_t$ and $\lambda_t$ are projected (linear maps; $\lambda=\sigma(\cdot)$ as the paper's default), the shapes of the B/C biases, and how MIMO's $R$ outputs are combined (a learned per-channel weighting).
+#%% md
+![Diagram: Mamba-3 (Lahoti et al., 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/81_2026_mamba3.png)
 #%%
 {{SETUP}}
 #%% md
@@ -170,7 +172,7 @@ for name, kw in variants:
     t0 = time.time(); a32, a128 = train_parity(**kw)
     print(f"{name:42s} parity of the whole string: T=64 {a32:.3f} | T=256 (4x longer) {a128:.3f}   ({time.time() - t0:.0f}s)")
 #%% md
-Chance is 0.5. Both real-valued models stay at chance even on lengths they trained on: with lengths varying from 16 to 64, "count the 1s, then memorize which counts are odd" would need the MLP to memorize parity for every count up to 64 from a decaying, blurry count, and it doesn't. (Trained on one fixed length, a real-valued model *can* partly memorize it; that is why we vary the length.) The complex (rotating) state solves the task in distribution and mostly keeps solving it at 4× the training length, because what it learned is a rotation, not a lookup. Its remaining errors at 256 come from the learned angle and decay being only approximately $\pi$ and 1, so small errors accumulate over very long strings. Gated DeltaNet can also do this if its eigenvalues are allowed to reach −1 (the paper's "GDN [−1,1]" row), another way to get a sign flip.
+Chance is 0.5. Both real-valued models stay at chance even on lengths they trained on: with lengths varying from 16 to 64, "count the 1s, then memorize which counts are odd" would need the MLP to memorize parity for every count up to 64 from a decaying, blurry count, and it doesn't. (Trained on one fixed length, a real-valued model *can* partly memorize it; that is why we vary the length.) The complex (rotating) state solves the task on the training lengths (0.86 for SISO, 0.996 for MIMO), which no real-valued model does. It does **not** extrapolate here: at 4× the training length every model, Mamba-3 included, is back at chance. The next cell shows why: the learned rotation on a 1 is far from the exact $\pi$ an algorithmic solution needs, so the phase drifts off over long strings. The paper reports 100% parity accuracy for Mamba-3, with a larger model and training budget; this toy run shows the capability in distribution, not the length generalisation. Gated DeltaNet can also do this if its eigenvalues are allowed to reach −1 (the paper's "GDN [−1,1]" row), another way to get a sign flip.
 #%% md
 ## 4. What did the state learn? The rotation angles
 For parity, the ideal per-step angle is $\Delta\theta = \pi$ (mod $2\pi$) on a 1 and $0$ on a 0. Measure the angle increment each bit causes in the trained model's first layer, for the channel pair that separates them most.
@@ -198,6 +200,8 @@ print(f"best channel pair (layer {li}, head {h_i}, pair {p_i}): a 1 adds {d1.abs
 plt.figure(figsize=(7, 3)); plt.hist(d0.cpu() / math.pi, 50, alpha=0.6, label="bit 0"); plt.hist(d1.cpu() / math.pi, 50, alpha=0.6, label="bit 1")
 plt.xlabel("rotation added this step (units of π), relative to a 0"); plt.legend(); plt.title("Mamba-3 learned to rotate by π on a 1"); plt.show()
 #%% md
+The plot title above overstates it: on average a 1 adds about 0.53π of rotation relative to a 0, with a spread of 0.43π. That is enough to separate odd from even counts on the training lengths, but only a rotation of exactly π would solve parity at every length.
+
 ## 5. Language modelling: Mamba-2 vs Mamba-3 SISO vs MIMO
 A small character LM on the procedural corpus, 4 layers, same width. MIMO adds a few parameters (the rank-R B/C projections); the paper parameter-matches by shrinking the MLP, which we skip at this scale.
 #%%
@@ -233,5 +237,5 @@ for name, kw in [("Mamba-2 style", dict(trap=False, rope=False, conv=True)),
 - **Trapezoid:** a principled, slightly better discretization. It gives the recurrence a built-in 2-tap convolution, so the extra short-conv layer can go.
 - **Complex state:** rotation plus decay gives the state a sign and phase, so it can track state (parity, modular counting) where real decays cannot. Implemented for free as data-dependent RoPE on B and C.
 - **MIMO:** a rank-R update raises arithmetic intensity, using compute that decoding leaves idle, for better quality at similar latency.
-- At this toy scale the LM differences are small (the paper's gains are ~0.1 perplexity at 1.5B parameters and 100B tokens). The parity result is the clear, qualitative difference.
+- At this toy scale the LM differences are small (the paper's gains are ~0.1 perplexity at 1.5B parameters and 100B tokens). The parity result is the clear, qualitative difference, on the training lengths; none of the models here generalises to 4× longer strings.
 - Where it fits: Mamba-2 layers power NVIDIA's Nemotron 3 hybrids (notebook 83) and many other 2026 hybrids; Mamba-3 is the state-space line's answer to Gated DeltaNet / KDA (notebooks 70, 80, 84).

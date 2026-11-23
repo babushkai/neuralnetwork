@@ -5,15 +5,17 @@ Notebook 79 assembled the early-2026 recipe (Qwen3.5 / DeepSeek-V4). Over the re
 
 | component | late-2026 version | seen in | notebook |
 |---|---|---|---|
-| linear-memory layers (3 of every 4) | **Gated DeltaNet-2**: channel-wise decay, separate erase and write gates | NVIDIA GDN-2; KDA in Kimi K3/K3.1, Ling 3.1, Solar Open 2, GLM-5.3 | 59, 63 |
-| global layers (1 of every 4) | **gated sparse attention** with a **block-compressed indexer** (top-k blocks + current block) | Qwen3.8 QSA, Kimi K3.1 Pro (DSA), DeepSeek-V4.1 CSA2 | 54, 65 |
-| residual path | **Block Attention Residuals** (softmax over depth) | Kimi AttnRes; Qwen's Gated Residual and DeepSeek's mHC are the alternatives | 55, 61, 64 |
-| feed-forward | **LatentMoE**: router on $d$, experts in $\ell=d/4$, 4× experts and 4× top-k, shared expert, bias-based balancing | Nemotron 3 Super/Ultra, Muse Spark Open | 44, 62 |
-| extra objective | multi-token prediction (depth 1) | everyone | 47 |
-| optimizer | Muon for matrices, AdamW for the rest | Kimi, DeepSeek-V4, Qwen3.8 | 53 |
-| schedule | **constant LR + weight averaging** (EMA) | Kolibri-1 (WSD elsewhere) | 68 |
+| linear-memory layers (3 of every 4) | **Gated DeltaNet-2**: channel-wise decay, separate erase and write gates | NVIDIA GDN-2; KDA in Kimi K3/K3.1, Ling 3.1, Solar Open 2, GLM-5.3 | 80, 84 |
+| global layers (1 of every 4) | **gated sparse attention** with a **block-compressed indexer** (top-k blocks + current block) | Qwen3.8 QSA, Kimi K3.1 Pro (DSA), DeepSeek-V4.1 CSA2 | 75, 86 |
+| residual path | **Block Attention Residuals** (softmax over depth) | Kimi AttnRes; Qwen's Gated Residual and DeepSeek's mHC are the alternatives | 76, 82, 85 |
+| feed-forward | **LatentMoE**: router on $d$, experts in $\ell=d/4$, 4× experts and 4× top-k, shared expert, bias-based balancing | Nemotron 3 Super/Ultra, Muse Spark Open | 64, 83 |
+| extra objective | multi-token prediction (depth 1) | everyone | 68 |
+| optimizer | Muon for matrices, AdamW for the rest | Kimi, DeepSeek-V4, Qwen3.8 | 74 |
+| schedule | **constant LR + weight averaging** (EMA) | Kolibri-1 (WSD elsewhere) | 89 |
 
 Not included: Mamba-3 (81, used in SSM hybrids), the causal encoder–decoder split (87), looping (88), Engram/N-gram memory (77), MLA, and post-training (58, 69).
+#%% md
+![Diagram: Late-2026 capstone](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/90_2026_late_2026_frontier_capstone.png)
 #%%
 {{SETUP}}
 #%%

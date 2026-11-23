@@ -17,6 +17,8 @@ The selected token set is the selected blocks plus the current, still incomplete
 V4.1-Flash's encoder repeats groups of [1 Full + 5 Reuse]; its decoder uses [Full or Reindex] + 3 Reuse.
 
 **This notebook:** the long-context recall task from notebook 75, at 256 tokens, with three layers (local → global → global). We convert a trained dense model to (a) DSA in both global layers, (b) QSA in both, and (c) Full + Reuse, then compare accuracy against indexer work.
+#%% md
+![Diagram: Cheaper sparse-attention indexers (Qwen3.8 QSA; DeepSeek-V4.1 CSA2, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/86_2026_cheaper_sparse_attention_indexers.png)
 #%%
 {{SETUP}}
 #%%

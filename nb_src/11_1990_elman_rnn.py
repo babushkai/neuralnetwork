@@ -10,6 +10,8 @@ $$h_t = \tanh(W_{xh} x_t + W_{hh} h_{t-1} + b_h), \qquad y_t = W_{hy} h_t + b_y$
 Training = **backpropagation through time** (BPTT): unroll the loop and backprop through the unrolled graph.
 
 Elman trained his network to **predict the next letter** in a stream and found that prediction error peaks at word boundaries — the network discovered "words" without being told. We reproduce that here with a character-level RNN written by hand.
+#%% md
+![Diagram: Elman network (1990)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/11_1990_elman_rnn.png)
 #%%
 {{SETUP}}
 #%%

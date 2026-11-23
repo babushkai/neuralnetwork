@@ -13,6 +13,8 @@ $$\max_\pi\ \mathbb E_{y\sim\pi}\big[r_\phi(y)\big] - \beta\,\mathrm{KL}\big(\pi
 A 1.3B InstructGPT model was preferred by labellers over the 175B GPT-3. The KL term matters because the RM is only an approximation of human judgement: optimise it too hard and the policy finds outputs the RM scores highly but people would not ("reward hacking", Goodhart's law).
 
 **Toy version.** The "human" is a hidden labelling function: it prefers continuations that **mention the teacher or say "carefully"**, and strongly dislikes **gibberish** (words that are not real words of the corpus). Only pairwise comparisons from this labeller are given to the reward model. We can then measure what RLHF actually does to the true preference, not just to the learned reward.
+#%% md
+![Diagram: RLHF / InstructGPT (Ouyang et al., 2022)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/57_2022_rlhf_instructgpt.png)
 #%%
 {{SETUP}}
 #%%

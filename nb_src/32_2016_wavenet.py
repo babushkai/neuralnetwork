@@ -12,6 +12,8 @@ WaveNet generates raw audio **one sample at a time** (16,000 per second), modell
 WaveNet made text-to-speech sound natural (Google Assistant, 2017). Its causal dilated stack also shaped later sequence models. The same autoregressive idea runs today's audio LLMs (with neural codec tokens instead of raw samples).
 
 Our data: synthetic "melodies", a sequence of notes from a musical scale with a decaying envelope, at 4 kHz.
+#%% md
+![Diagram: WaveNet (van den Oord et al., 2016)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/32_2016_wavenet.png)
 #%%
 {{SETUP}}
 #%%

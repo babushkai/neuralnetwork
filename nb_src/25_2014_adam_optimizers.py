@@ -14,6 +14,8 @@ Gradient descent says *which way* is downhill. Optimizers decide *how far* to st
 | **AdamW** | Adam, then $\theta \leftarrow \theta - \eta\lambda\theta$ | weight decay *decoupled* from the adaptive scaling |
 
 AdamW (with warmup + cosine decay) became the default for training Transformers until Muon-style optimizers arrived.
+#%% md
+![Diagram: Adam (Kingma & Ba, 2014) and AdamW (Loshchilov & Hutter, 2017)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/25_2014_adam_optimizers.png)
 #%%
 {{SETUP}}
 #%%

@@ -8,6 +8,8 @@ The answer to Minsky & Papert: stack layers with a **smooth** nonlinearity and c
 $$\delta^{(L)} = \frac{\partial \mathcal L}{\partial z^{(L)}}, \qquad \delta^{(l)} = \big(W^{(l+1)\top}\delta^{(l+1)}\big)\odot f'(z^{(l)}), \qquad \frac{\partial \mathcal L}{\partial W^{(l)}} = \delta^{(l)} a^{(l-1)\top}$$
 
 Here we write an MLP **from scratch in NumPy** — forward pass, backward pass, gradient check — and solve XOR and two-moons. Every later notebook relies on `loss.backward()` doing exactly this.
+#%% md
+![Diagram: Backpropagation (Rumelhart, Hinton & Williams, 1986)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/09_1986_backpropagation_mlp.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

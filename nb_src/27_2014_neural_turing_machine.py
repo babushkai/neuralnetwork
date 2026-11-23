@@ -16,6 +16,8 @@ Reading is $r_t = \sum_i w_t(i) M_t[i]$; writing is an **erase** then an **add**
 Content addressing is the same soft key–value lookup as Bahdanau attention (notebook 24) and, three years later, the Transformer (notebook 37).
 
 **Task (from the paper): copy.** Read a sequence of random 8-bit vectors, then reproduce it. Train on lengths 1–10 and test on longer ones. An algorithm ("write each item to the next row, then read them back in order") generalises to any length; a memorised mapping does not.
+#%% md
+![Diagram: Neural Turing Machine (Graves, Wayne & Danihelka, 2014)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/27_2014_neural_turing_machine.png)
 #%%
 {{SETUP}}
 device = torch.device("cpu")      # small, sequential computation: CPU is fast enough and avoids per-step GPU overhead

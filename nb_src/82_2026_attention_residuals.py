@@ -13,6 +13,8 @@ $$h_l = \sum_{i=0}^{l-1}\alpha_{i\to l}\,v_i,\qquad \alpha_{i\to l} = \frac{\exp
 - **Block AttnRes:** group layers into $N$ blocks, sum outputs inside a block, and attend over the $N$ block summaries plus the current partial sum. $N\approx 8$ recovers most of the gain at $O(Nd)$ memory, which matters under pipeline parallelism.
 
 **Paper results:** Block AttnRes matches a baseline trained with **1.25× more compute**. Ablations (16-layer model): baseline 1.766, DenseFormer (fixed scalar weights) 1.767, mHC 1.747, **Full AttnRes 1.737**, Block AttnRes 1.746. In the 48B model: GPQA-Diamond +7.5, Minerva Math +3.6, HumanEval +3.1, plus more uniform output magnitudes and gradients across depth.
+#%% md
+![Diagram: Attention residuals (Kimi, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/82_2026_attention_residuals.png)
 #%%
 {{SETUP}}
 #%%

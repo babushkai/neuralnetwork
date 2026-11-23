@@ -12,6 +12,8 @@ $$A_i = \frac{r_i - \operatorname{mean}(r_{1..G})}{\operatorname{std}(r_{1..G})}
 $$\mathcal J = \mathbb E\Big[\frac1G\sum_i \frac1{|o_i|}\sum_t \min\big(\rho_{i,t}A_i,\ \operatorname{clip}(\rho_{i,t}, 1\pm\epsilon)A_i\big)\Big] - \beta\, \mathbb D_{KL}(\pi_\theta\|\pi_{\text{ref}}), \qquad \rho_{i,t} = \frac{\pi_\theta(o_{i,t}\mid q, o_{i,<t})}{\pi_{\text{old}}(o_{i,t}\mid q, o_{i,<t})}$$
 
 **Toy task:** given a target number $S$, the policy must write 3 digits that **sum to $S$**. Correct answers are easy to verify and hard to guess (a random policy succeeds a few percent of the time). We pre-train nothing; GRPO alone drives the policy from random to near-perfect.
+#%% md
+![Diagram: GRPO and RL with verifiable rewards (DeepSeekMath, 2024; DeepSeek-R1, 2025)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/69_2025_grpo_reasoning_rl.png)
 #%%
 {{SETUP}}
 import copy

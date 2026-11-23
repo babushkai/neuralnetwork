@@ -16,6 +16,8 @@ Consequences, as stated in the paper:
 - Quality: Table 1 puts V4.1-Flash (8B/16B active) above V4-Flash (13B active) on MMLU-Pro 74.1 vs 68.3 and HumanEval 79.4 vs 69.5, though many other things changed between versions too.
 
 This notebook builds a miniature, trains it against a decoder-only model of the same depth, verifies that encoder-only prefill plus replay reproduces the full forward pass, and does the cache and compute accounting.
+#%% md
+![Diagram: Causal encoder–decoder (DeepSeek-V4.1-Flash, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/87_2026_causal_encoder_decoder.png)
 #%%
 {{SETUP}}
 #%%

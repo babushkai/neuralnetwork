@@ -9,6 +9,8 @@ BERT (notebook 42) learned language by **masking words and predicting them**. Fo
 2. **Asymmetric encoder–decoder.** The ViT encoder (notebook 49) sees **only the visible 25% of patches**, with no mask tokens at all, so pre-training is ~3× cheaper. A small, separate decoder takes the encoded visible patches plus mask tokens and reconstructs the pixels; it is thrown away after pre-training.
 
 The loss is the mean squared error on the **masked** patches only. After pre-training on unlabelled images, the encoder is a strong feature extractor. MAE pre-trained ViT-Huge reached 87.8% on ImageNet-1K with no extra data, and masked modelling is now standard in vision (and in video and audio).
+#%% md
+![Diagram: Masked autoencoders (He et al., 2021)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/53_2021_masked_autoencoder.png)
 #%%
 {{SETUP}}
 #%%

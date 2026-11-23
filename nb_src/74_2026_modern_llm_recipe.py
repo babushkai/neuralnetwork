@@ -17,6 +17,8 @@ The 2017 Transformer block has been refined piece by piece. By 2025–2026 the o
 This notebook builds that block from scratch, trains it next to the GPT-2-style block from 2018 on the same data, and compares AdamW with **Muon**, an optimizer that orthogonalises each weight-matrix update with a Newton–Schulz iteration.
 
 Data: a procedurally generated corpus (~200K characters) so that there is a real held-out validation set.
+#%% md
+![Diagram: The modern LLM block (2023–2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/74_2026_modern_llm_recipe.png)
 #%%
 {{SETUP}}
 #%%

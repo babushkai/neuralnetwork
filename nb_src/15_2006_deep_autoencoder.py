@@ -8,6 +8,8 @@ In 2006 deep networks were considered untrainable. These papers showed that **gr
 An **autoencoder** compresses $x$ to a low-dimensional code $z = f(x)$ and reconstructs $\hat x = g(z)$, minimising $\|x - \hat x\|^2$. With a linear encoder/decoder it recovers **PCA**; with deep nonlinear layers it learns much better codes.
 
 We do it in both styles: greedy layer-wise pre-training and then end-to-end fine-tuning, and compare a 2-D code with PCA.
+#%% md
+![Diagram: Deep autoencoder with greedy pre-training (Hinton & Salakhutdinov, 2006)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/15_2006_deep_autoencoder.png)
 #%%
 {{SETUP}}
 #%%
