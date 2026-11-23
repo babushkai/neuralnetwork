@@ -10,8 +10,6 @@ $$W = W_0 + \frac{\alpha}{r} B A, \qquad B\in\mathbb R^{d\times r},\; A\in\mathb
 $B$ starts at zero, so training starts exactly from the pre-trained model. After training, $BA$ can be **merged** into $W_0$, so inference costs nothing extra. LoRA (and QLoRA, DoRA, ...) is the standard way to adapt LLMs and diffusion models.
 
 **Experiment:** pre-train an MLP on digits, then adapt it to a new task: digits that are **rotated 90° and colour-inverted**. Compare (a) no adaptation, (b) full fine-tuning and (c) LoRA with several ranks.
-#%% md
-![Diagram: LoRA (Hu et al., 2021)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/52_2021_lora.png)
 #%%
 {{SETUP}}
 import copy

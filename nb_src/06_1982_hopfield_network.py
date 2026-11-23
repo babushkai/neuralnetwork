@@ -8,8 +8,6 @@ A fully connected network of $\pm1$ neurons with **symmetric** weights stores pa
 $$E(s) = -\tfrac12 \sum_{i\neq j} W_{ij} s_i s_j, \qquad W = \frac1N \sum_\mu \xi^\mu {\xi^\mu}^\top,\ W_{ii}=0 \quad\text{(Hebbian rule)}$$
 
 Asynchronous updates $s_i \leftarrow \operatorname{sign}(\sum_j W_{ij}s_j)$ never increase $E$, so a corrupted pattern "rolls downhill" to the stored memory. Capacity is about $0.138\,N$ random patterns.
-#%% md
-![Diagram: Hopfield network (1982)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/06_1982_hopfield_network.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

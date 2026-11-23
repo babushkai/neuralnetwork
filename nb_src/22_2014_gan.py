@@ -12,8 +12,6 @@ $$\min_G \max_D\ \mathbb E_{x\sim p_{data}}[\log D(x)] + \mathbb E_{z}[\log(1 - 
 At the optimum $p_G = p_{data}$. In practice $G$ maximises $\log D(G(z))$ instead (the **non-saturating** loss), which gives stronger gradients early on.
 
 We use the classic **ring of 8 Gaussians** — small enough for a CPU, and it shows the typical GAN failure **mode collapse** clearly.
-#%% md
-![Diagram: Generative adversarial network (Goodfellow et al., 2014)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/22_2014_gan.png)
 #%%
 {{SETUP}}
 #%%

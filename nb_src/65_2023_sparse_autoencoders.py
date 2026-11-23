@@ -10,8 +10,6 @@ If so, the features are recoverable by **dictionary learning**: find an overcomp
 $$f = \operatorname{ReLU}(W_{enc}(x - b_{dec}) + b_{enc}), \qquad \hat x = W_{dec} f + b_{dec}, \qquad \mathcal L = \lVert x-\hat x\rVert^2 + \lambda\lVert f\rVert_1$$
 
 with many more latents than input dimensions. In 2024, SAEs with millions of latents on Claude 3 Sonnet found features for concepts such as the Golden Gate Bridge, code vulnerabilities and sycophancy, and turning them up or down steered the model's behaviour.
-#%% md
-![Diagram: Sparse autoencoders for interpretability (2023–2024)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/65_2023_sparse_autoencoders.png)
 #%%
 {{SETUP}}
 #%%

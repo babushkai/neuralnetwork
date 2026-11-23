@@ -15,8 +15,6 @@ They proved rigorously what single-layer perceptrons **cannot** compute. The fam
 **Proof sketch.** Suppose $w_1x_1 + w_2x_2 \ge \theta$ fires exactly for XOR. Then $0 < \theta$ (from (0,0)), $w_1 \ge \theta$ and $w_2 \ge \theta$ (from (1,0),(0,1)), so $w_1 + w_2 \ge 2\theta > \theta$ — but (1,1) must *not* fire. Contradiction.
 
 The book is often blamed for the first "AI winter" in neural network research. The way out — hidden layers trained by backpropagation — came in 1986.
-#%% md
-![Diagram: XOR needs a hidden layer (Minsky & Papert, 1969)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/04_1969_xor_problem.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

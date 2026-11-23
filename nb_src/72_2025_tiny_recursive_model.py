@@ -17,8 +17,6 @@ y = f(y + z)                        # act: update the answer from the reasoning
 Training uses **deep supervision**: run several "supervision steps", each computing a loss on $y$ and then **detaching** $(y, z)$ before the next. The model learns to improve *any* current answer, and gradients only flow through the last recursion (cheap memory).
 
 **Our task:** 4×4 Sudoku (digits 1–4, each row, column and 2×2 box must contain all four) with 6–10 empty cells. We train on puzzles from 240 solution grids and test on puzzles from **48 unseen grids**.
-#%% md
-![Diagram: Tiny Recursive Model (Jolicoeur-Martineau, 2025)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/72_2025_tiny_recursive_model.png)
 #%%
 {{SETUP}}
 import itertools

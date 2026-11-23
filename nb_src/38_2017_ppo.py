@@ -12,8 +12,6 @@ $$L^{CLIP}(\theta) = \mathbb E_t\Big[\min\big(r_t\hat A_t,\ \operatorname{clip}(
 Once an action's probability has moved by more than $\epsilon$ (typically 0.2) in the helpful direction, its gradient is zero. TRPO enforced a similar trust region with a KL constraint and second-order optimisation; PPO gets most of the benefit with plain Adam.
 
 PPO became the default RL algorithm: OpenAI Five (Dota 2), dexterous robot hands, and the RL stage of InstructGPT and ChatGPT (notebook 57).
-#%% md
-![Diagram: Proximal Policy Optimization (Schulman et al., 2017)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/38_2017_ppo.png)
 #%%
 {{SETUP}}
 device = torch.device("cpu")

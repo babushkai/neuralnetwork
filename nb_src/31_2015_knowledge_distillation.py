@@ -10,8 +10,6 @@ $$\mathcal L = \alpha\, T^2\, \mathrm{KL}\!\left(\operatorname{softmax}(z_t/T)\,
 The **temperature** $T > 1$ softens both distributions so that the small probabilities matter; the $T^2$ factor keeps gradient sizes comparable.
 
 Distillation is everywhere in 2024–2026: small LLMs (Gemma, Llama 3.2 1B/3B, DeepSeek-R1-Distill, Qwen small models) are trained on a big model's outputs or logits.
-#%% md
-![Diagram: Knowledge distillation (Hinton, Vinyals & Dean, 2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/31_2015_knowledge_distillation.png)
 #%%
 {{SETUP}}
 #%%

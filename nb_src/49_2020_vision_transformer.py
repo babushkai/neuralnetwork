@@ -10,8 +10,6 @@ Treat an image as a **sequence of patches**:
 4. run a standard Transformer encoder and classify from [CLS]
 
 ViT has much weaker inductive biases than a CNN (no locality or translation equivariance built in), so it needs more data or augmentation. Given enough of either it matches or beats CNNs, and it is the image encoder in CLIP, multimodal LLMs and diffusion transformers.
-#%% md
-![Diagram: Vision Transformer (Dosovitskiy et al., 2020)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/49_2020_vision_transformer.png)
 #%%
 {{SETUP}}
 #%%

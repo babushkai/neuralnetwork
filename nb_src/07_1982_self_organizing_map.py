@@ -9,8 +9,6 @@ An **unsupervised**, competitive network. Neurons sit on a 2-D grid, each with a
 2. pull it *and its grid neighbours* toward $x$: $\;w_j \leftarrow w_j + \eta(t)\, h_{cj}(t)\,(x - w_j)$, with $h_{cj} = \exp(-\|r_c - r_j\|^2 / 2\sigma(t)^2)$
 
 Both $\eta$ and $\sigma$ shrink over time. Result: a **topology-preserving map** — similar inputs land on nearby neurons (like maps in the visual cortex).
-#%% md
-![Diagram: Self-organizing map (Kohonen, 1982)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/07_1982_self_organizing_map.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

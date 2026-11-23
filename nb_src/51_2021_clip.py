@@ -10,8 +10,6 @@ $$\mathcal L = \tfrac12\left[\operatorname{CE}(S, \text{diag}) + \operatorname{C
 The payoff is **zero-shot classification**: write a caption for each class ("a photo of a dog") and pick the most similar one. CLIP-style encoders sit underneath most text-to-image and multimodal models.
 
 Our version: digit images paired with varied captions ("a handwritten seven", "the number 7 written by hand", ...). At test time we classify with **prompt templates that never appeared in training**.
-#%% md
-![Diagram: CLIP (Radford et al., 2021)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/51_2021_clip.png)
 #%%
 {{SETUP}}
 #%%

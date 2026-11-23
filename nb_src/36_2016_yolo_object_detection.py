@@ -13,8 +13,6 @@ Classification says *what* is in an image. **Detection** says what, **where** (a
 At test time, keep confident boxes and remove duplicates with **non-maximum suppression (NMS)**. YOLO ran at 45 frames per second in 2016; its descendants (YOLOv3–v11, DETR's set prediction, RT-DETR) are still the standard for real-time detection.
 
 **Data:** synthetic 64×64 scenes with 1–4 shapes (square, disc, triangle) of random size, position, brightness and background noise, generated on the fly, so no download is needed.
-#%% md
-![Diagram: YOLO (Redmon et al., 2016), small version](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/36_2016_yolo_object_detection.png)
 #%%
 {{SETUP}}
 #%%

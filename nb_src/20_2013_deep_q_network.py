@@ -14,8 +14,6 @@ DQN used a **neural network** for $Q$ and learned 49 Atari games from raw pixels
 The same ideas, actor-critic methods and PPO led to AlphaGo (2016) and, much later, the RL stage of LLM training (notebooks 58 and 69).
 
 **Environment:** CartPole (balance a pole on a cart). The physics are written out below, so no `gym` install is needed. The networks here are tiny and the agent acts one step at a time, so this notebook **deliberately runs on CPU**, which is faster than a GPU for this workload.
-#%% md
-![Diagram: Deep Q-Network (Mnih et al., 2013/2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/20_2013_deep_q_network.png)
 #%%
 {{SETUP}}
 import copy

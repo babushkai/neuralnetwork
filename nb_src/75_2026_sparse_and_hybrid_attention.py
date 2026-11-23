@@ -18,8 +18,6 @@ The main attention then runs **only over the top-$k$ keys** for each query ($k=2
 Most layers use cheap **sliding-window** attention (each token sees the last $w$ tokens), and a few layers stay **global** (dense, sparse or linear). The local layers handle syntax and nearby context; the global ones handle long-range retrieval.
 
 **Task:** long-context associative recall. 8 key–value pairs are scattered through 128 tokens of filler, and 4 queries at the end each ask for one key's value. The answer is usually far outside any local window.
-#%% md
-![Diagram: Learned sparse attention (DeepSeek-V3.2, 2025) and hybrid stacks](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/75_2026_sparse_and_hybrid_attention.png)
 #%%
 {{SETUP}}
 #%%

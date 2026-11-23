@@ -9,8 +9,6 @@ Each layer computes $y = Wx$. If the weights have variance $\sigma^2$ and $x$ ha
 
 - **Xavier/Glorot** (for tanh, roughly linear near 0): $\sigma^2 = \dfrac{2}{n_{in} + n_{out}}$, a compromise between the forward and the backward condition.
 - **He/Kaiming** (for ReLU, which zeroes half its inputs and halves the variance): $\sigma^2 = \dfrac{2}{n_{in}}$.
-#%% md
-![Diagram: Weight initialization (Glorot & Bengio, 2010; He et al., 2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/16_2010_weight_initialization.png)
 #%%
 {{SETUP}}
 #%%

@@ -14,8 +14,6 @@ AlexNet won ImageNet 2012 with a top-5 error of 15.3%, versus 26.2% for the runn
 | Max-pooling, local response norm | (LRN was soon dropped) |
 
 ImageNet is far too big for a notebook, so we run a **mini-AlexNet** on digits and test each ingredient.
-#%% md
-![Diagram: AlexNet, scaled down (Krizhevsky, Sutskever & Hinton, 2012)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/17_2012_alexnet.png)
 #%%
 {{SETUP}}
 #%%

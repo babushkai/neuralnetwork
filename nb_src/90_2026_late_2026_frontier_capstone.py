@@ -14,8 +14,6 @@ Notebook 79 assembled the early-2026 recipe (Qwen3.5 / DeepSeek-V4). Over the re
 | schedule | **constant LR + weight averaging** (EMA) | Kolibri-1 (WSD elsewhere) | 89 |
 
 Not included: Mamba-3 (81, used in SSM hybrids), the causal encoder–decoder split (87), looping (88), Engram/N-gram memory (77), MLA, and post-training (58, 69).
-#%% md
-![Diagram: Late-2026 capstone](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/90_2026_late_2026_frontier_capstone.png)
 #%%
 {{SETUP}}
 #%%

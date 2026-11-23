@@ -10,8 +10,6 @@ $$E(v,h) = -a^\top v - b^\top h - v^\top W h, \qquad p(h_j{=}1\mid v)=\sigma(b_j
 The log-likelihood gradient is $\langle v h^\top\rangle_{\text{data}} - \langle v h^\top\rangle_{\text{model}}$. **Contrastive divergence (CD-k)** approximates the model term with $k$ steps of Gibbs sampling started at the data. Stacked RBMs gave the 2006 *Deep Belief Network* that restarted deep learning.
 
 Pure NumPy.
-#%% md
-![Diagram: Restricted Boltzmann machine (Hinton, 2002; Boltzmann machines, 1985)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/08_1985_boltzmann_machine_rbm.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

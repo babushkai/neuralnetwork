@@ -16,8 +16,6 @@ $$\text{write:}\quad s = 2\sigma\!\big(\tfrac1{n_r}W_w\operatorname{vec}(\hat R)
 - The paper's ablation (25B-A3B MoE, 560B tokens, Table 5) reports average benchmark scores of 54.66 for GR, 54.47 for dynamic mHC, 52.49 for static mHC and 50.91 for pre-norm (losses 1.590 / 1.594 / 1.596 / 1.617), and describes GR and dynamic mHC as performing "comparably at this scale". It also states that the production run had no loss spikes "without relying on explicit clipping methods such as qk-clip".
 
 *The equations above were checked against the report's Eqs. 30–34 (arXiv 2608.30320v1, §2): per-branch RMSNorm with its own gain, a sigmoid read gate with the $1/n_r$ inside the bottleneck, the mean over branches, a $2\sigma$ write gate with one scalar per branch, $n_r=4$, and no separate pre-norm. GR is applied separately to the attention and MLP blocks of every layer.*
-#%% md
-![Diagram: Gated Residual (Qwen3.8-Next, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/85_2026_gated_residual.png)
 #%%
 {{SETUP}}
 #%%

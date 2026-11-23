@@ -9,8 +9,6 @@ Ideas that make images tractable:
 - **Subsampling (pooling):** build tolerance to small shifts.
 
 We build LeNet-5 (32×32 input → C1 → S2 → C3 → S4 → C5 → F6 → output) and train it on handwritten digits upscaled to 32×32. From here on, notebooks use PyTorch and **run on a GPU if one is available** (CUDA or Apple MPS), otherwise CPU.
-#%% md
-![Diagram: LeNet-5 (LeCun et al., 1989/1998)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/10_1989_lenet_cnn.png)
 #%%
 {{SETUP}}
 #%%

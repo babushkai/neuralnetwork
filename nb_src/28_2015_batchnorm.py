@@ -8,8 +8,6 @@ Normalise each feature over the mini-batch, then let the network rescale it:
 $$\hat x = \frac{x - \mu_{\mathcal B}}{\sqrt{\sigma^2_{\mathcal B} + \epsilon}}, \qquad y = \gamma \hat x + \beta$$
 
 At test time, use running averages of $\mu$ and $\sigma^2$ instead of batch statistics. BatchNorm allows much higher learning rates, makes deep nets far less sensitive to initialisation, and adds a little regularisation. (Why it works is still debated: later work points to a smoother loss landscape rather than "covariate shift".) Its relatives **LayerNorm** (2016) and **RMSNorm** (2019) are what Transformers use.
-#%% md
-![Diagram: Batch normalization (Ioffe & Szegedy, 2015)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/28_2015_batchnorm.png)
 #%%
 {{SETUP}}
 #%%

@@ -12,8 +12,6 @@ A language model stores facts in its weights. That has three problems: facts lea
 Knowledge now lives in the store: add or edit a document and the system's answers change, with no retraining. Today almost every deployed LLM application (search assistants, enterprise chat over documents, coding agents reading a repository) uses some form of retrieval.
 
 **Toy world:** 600 people with made-up names, each with a city, a favourite colour and a job, written as one-sentence documents ("Talimo lives in Lisbon."). Models are trained on 450 of them. The other 150 are **new knowledge**: their documents are added to the store only after training.
-#%% md
-![Diagram: Retrieval-augmented generation (Lewis et al., 2020; DPR: Karpukhin et al., 2020)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/47_2020_retrieval_augmented_generation.png)
 #%%
 {{SETUP}}
 #%%

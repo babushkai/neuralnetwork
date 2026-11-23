@@ -11,8 +11,6 @@ $$\nabla_\theta J = \mathbb E_\tau\Big[\sum_t \nabla_\theta \log \pi_\theta(a_t\
 - $b$ is a **baseline**. Subtracting it leaves the gradient unbiased (since $\mathbb E[\nabla\log\pi]=0$) but can greatly reduce its variance.
 
 This one equation is the root of PPO (notebook 38), RLHF (notebook 57) and GRPO (notebook 69). GRPO's "group-relative advantage" is exactly REINFORCE with the group's mean reward as the baseline.
-#%% md
-![Diagram: REINFORCE (Williams, 1992)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/12_1992_reinforce_policy_gradient.png)
 #%%
 {{SETUP}}
 device = torch.device("cpu")      # tiny networks, one step at a time: CPU is faster here

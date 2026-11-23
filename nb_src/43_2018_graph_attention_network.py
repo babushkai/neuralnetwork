@@ -12,8 +12,6 @@ with several heads, as in the Transformer (notebook 37). A Transformer is in fac
 **GATv2** noticed a weakness in this score. Because $a^\top[Wh_i\Vert Wh_j] = a_1^\top Wh_i + a_2^\top Wh_j$ and LeakyReLU is monotonic, every node ranks its neighbours in the **same order**, determined by $a_2^\top Wh_j$ alone. GAT's attention is "static". GATv2 applies the nonlinearity before the final projection, $e_{ij} = a^\top\operatorname{LeakyReLU}(W[h_i\Vert h_j])$, which makes the ranking depend on the query node ("dynamic attention").
 
 **Test:** the 4-community graph from notebook 33, with an increasing fraction of **noisy edges** between communities. A useful attention should down-weight neighbours from other communities.
-#%% md
-![Diagram: Graph attention networks: GAT (2018) and GATv2 (2021)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/43_2018_graph_attention_network.png)
 #%%
 {{SETUP}}
 #%%

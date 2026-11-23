@@ -16,8 +16,6 @@ Also: RMSNorm on $B$ and $C$ ("BCNorm", like QK-norm) plus learnable channel-wis
 **Paper results (100B tokens):** at 1.5B, perplexity 10.47 (Mamba-2) → 10.35 (Mamba-3 SISO) → 10.24 (MIMO, R=4); average accuracy +0.6 points over Gated DeltaNet for SISO and +1.8 for MIMO. On parity, Mamba-3 scores 100% and Mamba-2 0.9% (scaled accuracy, where 0 = chance).
 
 **Our choices where the text we read is not explicit:** how $\theta_t$ and $\lambda_t$ are projected (linear maps; $\lambda=\sigma(\cdot)$ as the paper's default), the shapes of the B/C biases, and how MIMO's $R$ outputs are combined (a learned per-channel weighting).
-#%% md
-![Diagram: Mamba-3 (Lahoti et al., 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/81_2026_mamba3.png)
 #%%
 {{SETUP}}
 #%% md

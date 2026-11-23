@@ -17,8 +17,6 @@ This notebook assembles the pieces of a 2026 open-weight frontier LLM into one s
 | RMSNorm, pre-norm, SwiGLU experts | 74 | yes |
 
 Not included, to keep it small: MLA/CSA/HCA (67, 78), mHC (76), Engram (77), and post-training (SFT, RL from notebooks 58 and 69).
-#%% md
-![Diagram: Early-2026 capstone: a Qwen3.5 / DeepSeek-V4-style hybrid](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/79_2026_frontier_model_capstone.png)
 #%%
 {{SETUP}}
 #%%

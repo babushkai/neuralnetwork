@@ -10,8 +10,6 @@ $$h'^{\,k}_i = M_k\big[\operatorname{RMSNorm}(h^{k-1}_i);\ \operatorname{RMSNorm
 The embedding and output head are **shared** with the main model, and the total loss is $\mathcal L_{main} + \lambda\,\mathcal L_{MTP}$. Two benefits:
 1. **Denser training signal:** the model must plan representations that are useful several tokens ahead.
 2. **Free drafting at inference:** the MTP module guesses the token after next, so it can serve as the draft model for speculative decoding (notebook 60) without a separate model. DeepSeek reports 85–90% acceptance for the second token.
-#%% md
-![Diagram: Multi-token prediction (Gloeckle et al., 2024; DeepSeek-V3)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/68_2024_multi_token_prediction.png)
 #%%
 {{SETUP}}
 #%%

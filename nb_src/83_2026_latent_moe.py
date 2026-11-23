@@ -14,8 +14,6 @@ Notebook 64 built a mixture of experts (MoE): a router sends each token to $K$ o
 Nemotron 3 Super: $d=4096 \to \ell=1024$, 512 experts, top-22. Ultra: $d=8192\to\ell=2048$, 512 experts, top-22, 550B total / 55B active.
 
 **Bookkeeping, and an honest caveat (also Raschka's).** With $N'=4N$, $K'=4K$ and experts of the same hidden width $m$, the expert parameters ($N'\ell m = Ndm$), the per-token FLOPs ($K'\ell m = Kdm$) and the all-to-all payload ($K'\ell = Kd$) all **equal** the original coarse MoE. So the 4× bottleneck is not a 4× speedup. The gain is quality: $\binom{N'}{K'}$ expert combinations instead of $\binom{N}{K}$, at the coarse MoE's cost. The fair comparison is a **fine-grained** MoE with the same combinations and parameters, which pays $K'd$, i.e. 4× more communication.
-#%% md
-![Diagram: LatentMoE (NVIDIA Nemotron 3, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/83_2026_latent_moe.png)
 #%%
 {{SETUP}}
 #%%

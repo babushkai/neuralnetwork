@@ -10,8 +10,6 @@ The problem it solves:
 - **Character-level** sequences have no unknown words but are long, so the model spends its context and compute on spelling.
 
 **BPE** starts from characters (or, in GPT-2 onward, the 256 possible **bytes**) and repeatedly **merges the most frequent adjacent pair** into a new symbol. Frequent words become one token, rare words split into pieces, and nothing is ever out of vocabulary.
-#%% md
-![Diagram: Byte-pair encoding (Sennrich et al., 2016; byte-level: GPT-2, 2019)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/34_2016_byte_pair_encoding.png)
 #%%
 {{SETUP}}
 from collections import Counter

@@ -17,8 +17,6 @@ $$\mathcal L_{DPO} = -\log\sigma\Big(\beta\Big[\log\frac{\pi_\theta(y_w)}{\pi_{r
 It's simple and stable, and DPO plus its variants (IPO, KTO, SimPO, ...) became standard for preference tuning. RL with *verifiable* rewards (notebook 69) handles tasks where correctness can be checked.
 
 **Toy setup:** a small language model writes 8-token "answers" over a 12-token vocabulary. A hidden "human" prefers answers with more **rising steps** ($y_{t+1} > y_t$), plus noise. We train with DPO on pairs sampled from the reference model.
-#%% md
-![Diagram: Direct preference optimization (Rafailov et al., 2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/58_2023_dpo_preference_optimization.png)
 #%%
 {{SETUP}}
 import copy

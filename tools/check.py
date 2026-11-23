@@ -5,7 +5,6 @@
 3. every notebook is committed with outputs
 4. "notebook N" cross-references point to notebooks that exist
 5. every notebook link in README.md exists, and every notebook appears in README.md
-6. every notebook has its diagram in assets/diagrams/
 """
 import ast, pathlib, re, sys
 import nbformat
@@ -39,8 +38,6 @@ for src in srcs:
         if c.cell_type == "code":
             try: ast.parse(c.source)
             except SyntaxError as e: errors.append(f"{stem}: cell {k} is not valid Python ({e.msg}, line {e.lineno})")
-    if not (ROOT / "assets" / "diagrams" / f"{stem}.png").exists():
-        errors.append(f"{stem}: no diagram; add it to tools/diagrams.py and run python tools/diagrams.py {stem[:2]}")
     if stem not in NO_OUTPUTS_OK and not any(c.get("outputs") for c in nb.cells if c.cell_type == "code"):
         errors.append(f"{stem}: committed without outputs")
     for m in re.finditer(r"[Nn]otebooks? (\d{1,3}(?:(?:, | and | or |–)\d{1,3})*)", src.read_text()):

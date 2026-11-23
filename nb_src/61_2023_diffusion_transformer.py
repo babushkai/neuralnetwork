@@ -8,8 +8,6 @@ DiT replaces the U-Net denoiser (notebook 30) with a plain **Vision Transformer 
 - **Classifier-free guidance (CFG):** train with the label randomly dropped, then at sampling time extrapolate away from the unconditional prediction, $v = v_\varnothing + w\,(v_c - v_\varnothing)$. A larger $w$ gives samples that are more class-typical but less diverse.
 
 We train a class-conditional DiT on 8×8 digits (2×2 patches → 16 tokens).
-#%% md
-![Diagram: Diffusion Transformer (Peebles & Xie, 2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/61_2023_diffusion_transformer.png)
 #%%
 {{SETUP}}
 #%%

@@ -17,8 +17,6 @@ During generation an LLM caches the keys and values of every past token. For lon
 **Weight absorption:** $q^\top k = q^\top W^{UK} c = (W^{UK\top} q)^\top c$, so at inference you can attend directly in latent space and never materialise the full keys.
 
 Below: MLA from scratch → train a tiny LM → check (1) incremental decoding with the latent cache equals the full forward pass, and (2) the absorbed computation gives identical outputs.
-#%% md
-![Diagram: Multi-head latent attention (DeepSeek-V2, 2024)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/67_2024_multi_head_latent_attention.png)
 #%%
 {{SETUP}}
 #%%

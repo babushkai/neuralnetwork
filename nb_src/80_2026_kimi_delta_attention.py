@@ -12,8 +12,6 @@ with $o_t = S_t^\top q_t$, $S_t \in \mathbb R^{d_k\times d_v}$ and $\alpha_t \in
 From the paper (Sec. 4): $q, k = \operatorname{L2Norm}(\operatorname{Swish}(\operatorname{ShortConv}(Wx)))$, $v = \operatorname{Swish}(\operatorname{ShortConv}(Wx))$, $\beta = \sigma(W_\beta x)$, $\alpha_t$ from a **low-rank** projection, and output $o = W_o\big(\sigma(W_g^{up}W_g^{down}x) \odot \operatorname{RMSNorm}(\text{KDA})\big)$. Kimi Linear interleaves **3 KDA : 1 full-attention (MLA) layer with NoPE**, since the decaying KDA state already encodes position. That beat full attention on quality (MMLU-Pro 51.0 vs 47.2 at 1.4T tokens; RULER@128k 84.3 vs 81.3), cut the KV cache by up to 75%, and decoded up to 6× faster at 1M tokens.
 
 **Our choice where the paper is not explicit:** the decay function. The paper says it is "similar to GDN and Mamba", so we use $\alpha_t = \exp\!\big(-e^{A}\cdot\operatorname{softplus}(W^{up}_\alpha W^{down}_\alpha x_t + b)\big)$ per channel.
-#%% md
-![Diagram: Kimi Delta Attention (Moonshot AI, 2025–2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/80_2026_kimi_delta_attention.png)
 #%%
 {{SETUP}}
 #%% md

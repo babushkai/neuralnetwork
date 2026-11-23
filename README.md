@@ -143,10 +143,9 @@ No single notebook is "the state of the art". The open frontier of late 2026 is 
 Every notebook follows the same structure:
 
 1. **The paper and the problem it solved.** Primary citations first, then the idea in a few equations.
-2. **A diagram of the design**, drawn to match the notebook's own implementation (layer sizes, gates, where the loss attaches).
-3. **A from-scratch implementation.** NumPy for the early notebooks and plain PyTorch afterwards. No pretrained weights, model hubs, or library layers that hide the mechanism being taught.
-4. **One experiment that isolates the claim.** For example: plain vs. residual networks at increasing depth; a reward model that is optimised with and without a KL penalty; a delta-rule memory against plain linear attention on associative recall.
-5. **Takeaways and limits.** What the result shows, what it does not, and what the full-scale system did differently.
+2. **A from-scratch implementation.** NumPy for the early notebooks and plain PyTorch afterwards. No pretrained weights, model hubs, or library layers that hide the mechanism being taught.
+3. **One experiment that isolates the claim.** For example: plain vs. residual networks at increasing depth; a reward model that is optimised with and without a KL penalty; a delta-rule memory against plain linear attention on associative recall.
+4. **Takeaways and limits.** What the result shows, what it does not, and what the full-scale system did differently.
 
 Conventions:
 
@@ -185,7 +184,6 @@ Requirements: PyTorch 2.2+, NumPy, Matplotlib, scikit-learn (see `requirements.t
 
 ```
 notebooks/    the 90 notebooks (.ipynb)
-assets/diagrams/  one architecture diagram per notebook (PNG), shown at the top of each notebook
 nb_src/       their sources, in a plain-text "#%% md" / "#%%" cell format that diffs cleanly
 tools/
   build.py         nb_src/<name>.py → notebooks/<name>.ipynb; expands shared snippets; keeps outputs of unchanged cells
@@ -193,7 +191,6 @@ tools/
   run_all.sh       rebuild and execute notebooks in place
   check.py         consistency checks run in CI: sources match notebooks, code parses, outputs saved, README complete
   make_figure.py   rebuild assets/hero.png from notebook outputs
-  diagrams.py      the 90 architecture diagrams, as data; draws assets/diagrams/ (renderer: diagram_engine.py)
   show_outputs.py  print the text outputs of executed notebooks
 ```
 

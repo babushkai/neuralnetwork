@@ -13,8 +13,6 @@ $$S_t = \big(I - k_t\,(b_t\odot k_t)^\top\big)\,D_t S_{t-1} + k_t\,(w_t\odot v_t
 - **Special cases:** $b_t=w_t=\beta_t\mathbf 1$ gives KDA; also tying $\alpha_t$ to one scalar gives Gated DeltaNet.
 
 **Paper results (1.3B, 100B tokens):** best average among Mamba-2, GDN, KDA, Mamba-3 SISO/MIMO (recurrent 53.11 vs KDA 52.28; hybrid 53.97 vs 52.68), Wiki perplexity 15.90 vs 16.81 (KDA), and much better multi-key retrieval (MK-NIAH-1 @1K: 72.6 vs 54.0). The gate ablation shows **most of the gain comes from the channel-wise erase gate**.
-#%% md
-![Diagram: Gated DeltaNet-2 (NVIDIA, 2026)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/84_2026_gated_deltanet_2.png)
 #%%
 {{SETUP}}
 #%% md

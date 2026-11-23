@@ -14,8 +14,6 @@ The $\arg\min$ has no gradient, so the decoder's gradient is copied straight thr
 $$\mathcal L = \lVert x - \hat x\rVert^2 + \lVert \operatorname{sg}[z_e] - e\rVert^2 + \beta\,\lVert z_e - \operatorname{sg}[e]\rVert^2$$
 
 where sg is stop-gradient. Why discrete codes matter: an image becomes a short sequence of **tokens**, and an autoregressive model (a PixelCNN in the paper, later a Transformer) can learn a prior over them. That is how DALL·E 1, Parti, Jukebox, neural audio codecs (SoundStream, EnCodec) and the image tokenizers of today's multimodal LLMs work. Latent diffusion (notebook 56) uses the same "compress first, then model the latents" idea.
-#%% md
-![Diagram: VQ-VAE (van den Oord, Vinyals & Kavukcuoglu, 2017)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/39_2017_vq_vae.png)
 #%%
 {{SETUP}}
 #%%

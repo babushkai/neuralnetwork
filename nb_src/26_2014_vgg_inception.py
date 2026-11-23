@@ -9,8 +9,6 @@ After AlexNet (notebook 17), the 2014 ImageNet challenge was won by going deeper
 - **Inception: wide, multi-scale, and cheap.** Each module runs 1×1, 3×3 and 5×5 convolutions and a pooling branch **in parallel** and concatenates them. **1×1 convolutions** first shrink the channel count (a "bottleneck"), so the expensive branches are cheap. GoogLeNet had 22 layers but ~12× fewer parameters than AlexNet, partly thanks to **global average pooling** instead of big fully connected layers.
 
 ResNet (notebook 29) then took depth further with residual connections, keeping VGG's 3×3 style and Inception's 1×1 bottlenecks.
-#%% md
-![Diagram: VGG and Inception (2014): the Inception module](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/26_2014_vgg_inception.png)
 #%%
 {{SETUP}}
 #%% md

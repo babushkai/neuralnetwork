@@ -9,8 +9,6 @@ Quantization maps each weight to one of $2^b$ levels: $\hat w = s \cdot \operato
 - **Granularity:** one scale per tensor, per output channel, or per **group** of 32–128 weights. Finer is more accurate.
 - **Outliers:** a few huge values stretch the scale and wipe out precision for everything else.
 - **GPTQ:** quantize the columns of a weight matrix one at a time, and **adjust the not-yet-quantized columns to compensate** for each rounding error, using second-order information $H = X^\top X$ from a little calibration data.
-#%% md
-![Diagram: Quantization (LLM.int8, GPTQ and others, 2022–2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/62_2023_quantization.png)
 #%%
 {{SETUP}}
 import copy

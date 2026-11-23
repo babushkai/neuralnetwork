@@ -12,8 +12,6 @@ A Neural ODE takes the limit: the network *is* $f$, and the output is $h(T)$, co
 - **Constant memory training** with the **adjoint method**: instead of storing every solver step for backpropagation, solve a second ODE backwards in time for the gradient, $\frac{da}{dt} = -a^\top \frac{\partial f}{\partial h}$ with $a(t) = \partial L/\partial h(t)$, and accumulate $\frac{dL}{d\theta} = -\int_{T}^{0} a^\top \frac{\partial f}{\partial \theta}\,dt$.
 - **Continuous time:** irregularly sampled observations (medical records, physics) fit naturally, and the learned dynamics can be integrated to any time.
 - **Continuous normalizing flows:** the change of variables becomes $\frac{d\log p}{dt} = -\operatorname{tr}\frac{\partial f}{\partial h}$, the idea that later became flow matching (notebook 55).
-#%% md
-![Diagram: Neural ordinary differential equations (Chen et al., 2018)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/44_2018_neural_ode.png)
 #%%
 {{SETUP}}
 device = torch.device("cpu")

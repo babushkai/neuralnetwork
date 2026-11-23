@@ -11,8 +11,6 @@ S4 used **fixed** $(\Delta, B, C)$, which is a time-invariant system and so can 
 **Mamba's selection mechanism:** make $\Delta_t, B_t, C_t$ functions of the input $x_t$. A large $\Delta$ means "reset and absorb this token", and a small $\Delta$ means "ignore it and keep the state". This costs the convolution trick, so Mamba uses a hardware-aware **parallel scan** instead. Compute and memory grow **linearly** with sequence length, and inference needs only a constant-size state.
 
 We implement the Mamba block with a plain sequential scan (clear rather than fast) and reproduce the paper's **selective copying** task, where a non-selective (LTI) SSM fails.
-#%% md
-![Diagram: Mamba: selective state spaces (Gu & Dao, 2023)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/59_2023_mamba_selective_ssm.png)
 #%%
 {{SETUP}}
 #%% md

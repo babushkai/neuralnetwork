@@ -12,8 +12,6 @@ $$
 The weights $\alpha$ form a soft, learned **alignment**, which can be plotted. This idea, stripped of the RNN, becomes the Transformer (2017).
 
 Task: translate human-written dates into ISO format, e.g. `"tuesday, march 3 1998"` → `"1998-03-03"`.
-#%% md
-![Diagram: Bahdanau attention (Bahdanau, Cho & Bengio, 2014)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/24_2014_bahdanau_attention.png)
 #%%
 {{SETUP}}
 import datetime

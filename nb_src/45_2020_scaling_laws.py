@@ -12,8 +12,6 @@ $E$ is the irreducible loss, the entropy of the data itself. Two consequences sh
 - **Compute-optimal allocation:** for a fixed budget, Chinchilla found you should grow parameters and tokens **equally** ($N_{opt} \propto C^{0.5}$, roughly 20 tokens per parameter). GPT-3-era models were heavily under-trained. (Since 2023 models are often trained far *past* this point, because a smaller model is cheaper to serve.)
 
 **Our lab:** text from a random **Markov chain** over 64 tokens. Its true entropy is known exactly, so we know $E$ in advance. We train tiny Transformers across sizes and token budgets and fit the laws ourselves. Here a model's width limits how well it can represent the 64×64 transition table, which plays the role that world knowledge plays for real LLMs.
-#%% md
-![Diagram: Scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/45_2020_scaling_laws.png)
 #%%
 {{SETUP}}
 #%%

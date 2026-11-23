@@ -11,8 +11,6 @@ GPT reads left-to-right. BERT uses the Transformer **encoder** so that every tok
 Then **fine-tune**: put a small classifier on the `[CLS]` token. *Pre-train once on unlabelled text, fine-tune cheaply on many tasks* became the NLP recipe of 2018–2020.
 
 Our setup: a synthetic "review" language. We pre-train on 20k unlabelled sentences, then fine-tune on just **64 labelled** sentences, and compare against the same model trained from scratch.
-#%% md
-![Diagram: BERT (Devlin et al., 2018)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/42_2018_bert.png)
 #%%
 {{SETUP}}
 #%%

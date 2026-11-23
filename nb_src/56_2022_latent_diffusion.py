@@ -15,8 +15,6 @@ Stable Diffusion (August 2022) combined this with text conditioning through cros
 $$\hat\epsilon = \epsilon(z_t, \varnothing) + w\,\big(\epsilon(z_t, c) - \epsilon(z_t, \varnothing)\big)$$
 
 $w=1$ is plain conditional sampling; $w>1$ trades diversity for fidelity to the condition.
-#%% md
-![Diagram: Latent diffusion and classifier-free guidance (Rombach et al.; Ho & Salimans, 2022)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/56_2022_latent_diffusion.png)
 #%%
 {{SETUP}}
 #%%

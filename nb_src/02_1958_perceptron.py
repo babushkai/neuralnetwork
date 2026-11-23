@@ -10,8 +10,6 @@ $$\hat y = \operatorname{sign}(w^\top x + b), \qquad \text{if } \hat y \neq y:\;
 **Perceptron convergence theorem (Novikoff, 1962):** if the data is linearly separable with margin $\gamma$ and $\|x\|\le R$, the algorithm makes at most $(R/\gamma)^2$ mistakes.
 
 Pure NumPy — no GPU needed.
-#%% md
-![Diagram: Perceptron (Rosenblatt, 1958)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/02_1958_perceptron.png)
 #%%
 import numpy as np
 import matplotlib.pyplot as plt

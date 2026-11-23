@@ -15,8 +15,6 @@ Softmax attention costs $O(T^2)$ and its KV cache grows with $T$. Linear-attenti
 Output: $o_t = S_t q_t$. Cost is linear in $T$ and inference memory is constant.
 
 We compare the memories first directly, then inside small trained models on **associative recall with overwrites**: the model must look up the *latest* value bound to a key in its context.
-#%% md
-![Diagram: Gated DeltaNet (Yang, Kautz & Hatamizadeh, 2025)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/70_2025_gated_deltanet.png)
 #%%
 {{SETUP}}
 #%%

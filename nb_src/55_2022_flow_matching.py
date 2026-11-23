@@ -10,8 +10,6 @@ With the straight-line path $x_t = (1-t)\,x_0 + t\,x_1$ (noise $x_0$, data $x_1$
 $$\mathcal L = \mathbb E_{t, x_0, x_1}\, \big\|v_\theta(x_t, t) - (x_1 - x_0)\big\|^2$$
 
 No noise schedule and no SDE, just regression. Sampling = integrate the ODE with a few Euler steps. **Reflow** (re-pairing noise with the model's own outputs and training again) straightens the paths further, allowing very few steps. Flow matching is used in Stable Diffusion 3, Flux, Meta's Movie Gen and many speech models.
-#%% md
-![Diagram: Flow matching / rectified flow (Lipman et al.; Liu et al., 2022)](https://raw.githubusercontent.com/babushkai/neuralnetwork/main/assets/diagrams/55_2022_flow_matching.png)
 #%%
 {{SETUP}}
 #%%
